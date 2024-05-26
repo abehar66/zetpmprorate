@@ -1,0 +1,88 @@
+<mvc:View 
+  id="ComprobanteView"  
+  controllerName="zetpmprorate.controller.Worklist"  
+  xmlns="sap.m" 
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:f="sap.ui.layout.form"
+  xmlns:core="sap.ui.core" 
+  xmlns:m="sap.m" 
+  xmlns:l="sap.ui.layout" >  
+  <f:SimpleForm		
+		id="ComprobanteForm"
+		columnsL="3"
+		columnsM="3"
+		editable="true"
+		layout="ResponsiveGridLayout">		
+		<f:content>	
+        <Table
+                id="tableComprobante"
+                width="auto"
+                items="{
+                    path: 'ExpenseModel>/ExpenseSet',
+                    sorter: {
+                        path: 'ExpedienteId',
+                        descending: false
+                    }
+                }"
+                noDataText="{worklistView>/tableNoDataText}"
+                busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+                growing="true"
+                growingScrollToLoad="true"
+                updateFinished=".onUpdateFinished">
+
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            id="tableHeader"
+                            text="{worklistView>/worklistTableTitle}"
+                            level="H3"/>
+                        <ToolbarSpacer />
+                        <SearchField
+                            id="searchField"
+                            tooltip="{i18n>worklistSearchTooltip}"
+                            search=".onSearch">
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    maxWidth="200px"
+                                    priority="NeverOverflow"/>
+                            </layoutData>
+                        </SearchField>
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column id="ExpedienteId">
+                        <Text text="{i18n>tableExpedienteIdTitle}" id="ExpedienteIdTitle"/>
+                    </Column>
+                    <Column id="ExpedienteName">
+                        <Text text="{i18n>tableExpedienteNameTitle}" id="ExpedienteNameTitle"/>
+                    </Column>
+                    <Column id="Centro">
+                        <Text text="{i18n>tableOrdenTitle}" id="OrdenTitle"/>
+                    </Column>
+                    <Column id="Modelo">
+                        <Text text="{i18n>tableCuentaTitle}" id="CuentaTitle"/>
+                    </Column>
+                    <Column id="Pieza">
+                        <Text text="{i18n>tableGastoTitle}" id="GastoTitle"/>
+                    </Column>                                        
+                </columns>
+
+                <items>
+                    <ColumnListItem id="_IDGenColumnListItem1"
+                        type="Navigation"
+                        press=".onPress">
+                        <cells>
+                            <ObjectIdentifier id="_IDGenObjectIdentifier1" 
+                                title="{ExpenseModel>ExpedienteId}"/>                            
+                        </cells>                        
+                        <Text id="_IDGenText2" text="{ExpenseModel>ExpedienteName}"/>
+                        <Text id="_IDGenText1" text="{ExpenseModel>Orden}"/>
+                        <Text id="_IDGenText3" text="{ExpenseModel>Cuenta}"/>
+                        <Text id="_IDGenText4" text="{ExpenseModel>Gasto}"/>                        
+                    </ColumnListItem>
+                </items>
+            </Table>        
+        </f:content>
+    </f:SimpleForm>	
+</mvc:View> 

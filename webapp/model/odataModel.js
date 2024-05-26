@@ -16,6 +16,7 @@ sap.ui.define([
 
         const maestroEntity = '/MaestroSet';        
         const prorateEntity = '/PartsProrationSet';
+        const expenseEntity = '/ExpenseProrationSet';
         const authorityEntity = '/AuthoritySet';
         
 
@@ -32,16 +33,25 @@ sap.ui.define([
 
             },
 
-            getListPiezas: function () {
+            getListGasto: function () {               
 
-                let Filters = [
-                    new Filter({
-                        path: 'Usuario',
-                        operator: FilterOperator.EQ,
-                        value1: this.UserId
-                    }),
-                ];
+                return new Promise(function (resolve, reject) {
 
+                    this.odataModel.read(expenseEntity, {
+                        filters: null,
+                        success: oData => {
+                            resolve(oData)
+                        },
+                        error: e => {
+                            reject(e)
+                        }
+                    });
+                }.bind(this))
+
+            },            
+
+            getListPieza: function () {
+                
                 return new Promise(function (resolve, reject) {
 
                     this.odataModel.read(prorateEntity, {
@@ -55,7 +65,26 @@ sap.ui.define([
                     });
                 }.bind(this))
 
-            },            
+            }, 
+            
+            getListProration : function () {
+                const sUrlParameters = '$expand=ToExpense';                
+                
+                return new Promise(function (resolve, reject) {
+
+                    this.odataModel.read(prorateEntity, {
+                        urlParameters: sUrlParameters,
+                        filters: null,
+                        success: oData => {
+                            resolve(oData)
+                        },
+                        error: e => {
+                            reject(e)
+                        }
+                    });
+                }.bind(this))
+
+            },
             
             getListMaestros: function (maestro, RefData = null) {
 

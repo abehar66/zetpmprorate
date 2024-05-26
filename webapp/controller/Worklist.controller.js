@@ -41,8 +41,21 @@ sap.ui.define([
                 {                    
                     'ProrateSet': [],                    
                 });
+
+            this.expenseModel = new JSONModel(
+                {                    
+                    'ExpenseSet': [],                    
+                });    
+
+            this.prorationModel = new JSONModel(
+                {                    
+                   'ProrateSet': [], 
+                   'ExpenseSet': []                   
+                });    
             
             this.setModel(this.prorateModel, "ProrateModel");    
+            this.setModel(this.expenseModel, "ExpenseModel");   
+            this.setModel(this.prorationModel, "ProrationModel");
 
         },
 
@@ -125,16 +138,58 @@ sap.ui.define([
         },
 
         onProrate : function () {
-            const table = this.byId("table");
-            table.setBusy(true)
-            odataModel.getListPiezas()
+            const tablePieza = this.byId("PiezaView--tablePieza");
+            const tableComprobante = this.byId("ComprobanteView--tableComprobante");
+
+            tablePieza.setBusy(true);            
+            tableComprobante.setBusy(true);
+            odataModel.getListProration()
             .then(oData=>{
-                table.setBusy(false)
-                this.prorateModel.setProperty('/ProrateSet', oData.results);                
+                tablePieza.setBusy(false)
+                tableComprobante.setBusy(false);
+                this.prorateModel.setProperty('/ProrateSet', oData.results);    
+                tablePieza.getBinding("items").getModel().setProperty("/ProrateSet",oData.results);   
+                this.prorateModel.setProperty('/ExpenseSet', oData.results);    
+                tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",oData.results);   
+                         
             })
             .catch(error=>{
-                table.setBusy(false)
-                console.error(error)
+                tablePieza.setBusy(false);
+                tableComprobante.setBusy(false);
+                console.error(error);
+            });            
+            
+        },  
+
+        onProrate1 : function () {
+            const tablePieza = this.byId("PiezaView--tablePieza");
+            const tableComprobante = this.byId("ComprobanteView--tableComprobante");
+
+            tablePieza.setBusy(true);            
+            tableComprobante.setBusy(true);
+            odataModel.getListPieza()
+            .then(oData=>{
+                tablePieza.setBusy(false)
+                this.prorateModel.setProperty('/ProrateSet', oData.results);    
+                tablePieza.getBinding("items").getModel().setProperty("/ProrateSet",oData.results);   
+                         
+            })
+            .catch(error=>{
+                tablePieza.setBusy(false);
+                console.error(error);
+            });
+
+            
+            odataModel.getListGasto()
+            .then(oData=>{
+                tableComprobante.setBusy(false)
+                this.prorateModel.setProperty('/ExpenseSet', oData.results);    
+                tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",oData.results);   
+                         
+            })
+            .catch(error=>{
+                tableComprobante.setBusy(false);
+                console.error(error);
             });
         },  
 
