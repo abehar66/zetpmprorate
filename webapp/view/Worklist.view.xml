@@ -1,0 +1,100 @@
+<mvc:View
+    controllerName="zetpmprorate.controller.Worklist"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:semantic="sap.f.semantic">
+
+    <semantic:SemanticPage
+        id="page"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false">
+
+        <semantic:titleHeading>
+            <Title
+                text="{i18n>worklistTitle}"
+                level="H2"/>
+        </semantic:titleHeading>
+
+         <semantic:titleCustomTextActions>
+            <Button id="_IDGenProrate" icon="sap-icon://upload" text="Prorratear" press=""/>
+        </semantic:titleCustomTextActions>
+
+        <semantic:content>
+            <Table
+                id="table"
+                width="auto"
+                items="{
+                    path: '/PartsProrationSet',
+                    sorter: {
+                        path: 'ExpedienteId',
+                        descending: false
+                    }
+                }"
+                noDataText="{worklistView>/tableNoDataText}"
+                busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+                growing="true"
+                growingScrollToLoad="true"
+                updateFinished=".onUpdateFinished">
+
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            id="tableHeader"
+                            text="{worklistView>/worklistTableTitle}"
+                            level="H3"/>
+                        <ToolbarSpacer />
+                        <SearchField
+                            id="searchField"
+                            tooltip="{i18n>worklistSearchTooltip}"
+                            search=".onSearch">
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    maxWidth="200px"
+                                    priority="NeverOverflow"/>
+                            </layoutData>
+                        </SearchField>
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column id="ExpedienteId">
+                        <Text text="{i18n>tableExpedienteIdTitle}" id="ExpedienteIdTitle"/>
+                    </Column>
+                    <Column id="Centro">
+                        <Text text="{i18n>tableCentroTitle}" id="CentroTitle"/>
+                    </Column>
+                    <Column id="Modelo">
+                        <Text text="{i18n>tableModeloTitle}" id="ModeloTitle"/>
+                    </Column>
+                    <Column id="Pieza">
+                        <Text text="{i18n>tablePiezaTitle}" id="PiezaTitle"/>
+                    </Column>                    
+                    <Column id="Cant">
+                        <Text text="{i18n>tableCantTitle}" id="CantTitle"/>
+                    </Column>
+                    <Column id="Precio">
+                        <Text text="{i18n>tablePrecioTitle}" id="PrecioTitle"/>
+                    </Column>                    
+                </columns>
+
+                <items>
+                    <ColumnListItem id="_IDGenColumnListItem1"
+                        type="Navigation"
+                        press=".onPress">
+                        <cells>
+                            <ObjectIdentifier id="_IDGenObjectIdentifier1"
+                                title="{ExpedienteId}"/>                            
+                        </cells>
+                        <Text id="_IDGenText1" text=""/>
+                        <Text id="_IDGenText2" text=""/>
+                        <Text id="_IDGenText3" text=""/>
+                        <Text id="_IDGenText4" text=""/>
+                        <Text id="_IDGenText5" text=""/>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </semantic:content>        
+
+    </semantic:SemanticPage>
+
+</mvc:View>
