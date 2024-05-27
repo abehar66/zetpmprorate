@@ -18,7 +18,7 @@
                 id="tableComprobante"
                 width="auto"
                 items="{
-                    path: 'ExpenseModel>/ExpenseSet',
+                    path: 'ProrationModel>/ExpenseSet',
                     sorter: {
                         path: 'ExpedienteId',
                         descending: false
@@ -74,12 +74,12 @@
                         press=".onPress">
                         <cells>
                             <ObjectIdentifier id="_IDGenObjectIdentifier1" 
-                                title="{ExpenseModel>ExpedienteId}"/>                            
+                                title="{ProrationModel>ExpedienteId}"/>                            
                         </cells>                        
-                        <Text id="_IDGenText2" text="{ExpenseModel>ExpedienteName}"/>
-                        <Text id="_IDGenText1" text="{ExpenseModel>Orden}"/>
-                        <Text id="_IDGenText3" text="{ExpenseModel>Cuenta}"/>
-                        <Text id="_IDGenText4" text="{ExpenseModel>Gasto}"/>                        
+                        <Text id="_IDGenText2" text="{ProrationModel>ExpedienteName}"/>
+                        <Text id="_IDGenText1" text="{ProrationModel>Orden}"/>
+                        <Text id="_IDGenText3" text="{ProrationModel>Cuenta}"/>
+                        <Text id="_IDGenText4" text="{ProrationModel>Gasto}"/>                        
                     </ColumnListItem>
                 </items>
             </Table>        

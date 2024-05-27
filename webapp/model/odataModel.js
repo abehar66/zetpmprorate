@@ -15,7 +15,7 @@ sap.ui.define([
         "use strict";
 
         const maestroEntity = '/MaestroSet';        
-        const prorateEntity = '/PartsProrationSet';
+        const prorateEntity = '/ProrationSet';
         const expenseEntity = '/ExpenseProrationSet';
         const authorityEntity = '/AuthoritySet';
         
@@ -68,7 +68,7 @@ sap.ui.define([
             }, 
             
             getListProration : function () {
-                const sUrlParameters = '$expand=ToExpense';                
+                const sUrlParameters = '$expand=ToExpense,ToParts';                
                 
                 return new Promise(function (resolve, reject) {
 

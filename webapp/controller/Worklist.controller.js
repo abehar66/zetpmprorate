@@ -49,7 +49,8 @@ sap.ui.define([
 
             this.prorationModel = new JSONModel(
                 {                    
-                   'ProrateSet': [], 
+                   'ProrationSet': [],
+                   'PartsSet': [], 
                    'ExpenseSet': []                   
                 });    
             
@@ -146,11 +147,12 @@ sap.ui.define([
             odataModel.getListProration()
             .then(oData=>{
                 tablePieza.setBusy(false)
-                tableComprobante.setBusy(false);
-                this.prorateModel.setProperty('/ProrateSet', oData.results);    
-                tablePieza.getBinding("items").getModel().setProperty("/ProrateSet",oData.results);   
-                this.prorateModel.setProperty('/ExpenseSet', oData.results);    
-                tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",oData.results);   
+                tableComprobante.setBusy(false);                
+                let dato = oData.results[0];
+                this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);    
+                tablePieza.getBinding("items").getModel().setProperty("/PartsSet",dato.ToParts.results);   
+                this.prorationModel.setProperty('/ExpenseSet', dato.ToExpense.results);    
+                tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",dato.ToExpense.results);   
                          
             })
             .catch(error=>{

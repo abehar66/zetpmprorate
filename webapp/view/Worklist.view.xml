@@ -24,7 +24,7 @@
 				id="iconTabBar"
 				headerBackgroundDesign="Transparent"
 				class="sapUiResponsiveContentPadding"
-				binding="{ProrateModel}"
+				binding="{ProrationModel}"
 				select=""
 				selectedKey="">				
                 <items>
