@@ -82,7 +82,7 @@
                         type="Navigation"
                         press=".onPress">
                         <cells>
-                            <ObjectIdentifier id="_IDGenObjectIdentifier1"
+                            <ObjectIdentifier id="_IDGenObjectIdentifier1" 
                                 title="{ExpedienteId}"/>                            
                         </cells>
                         <Text id="_IDGenText1" text=""/>

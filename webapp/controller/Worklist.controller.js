@@ -4,8 +4,8 @@ sap.ui.define([
     "../model/formatter",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator"
-], function (BaseController, JSONModel, formatter, Filter, FilterOperator) {
-    "use strict";
+], function (BaseController, JSONModel, formatter, Filter, FilterOperator) { 
+    "use strict"; 
 
     return BaseController.extend("zetpmprorate.controller.Worklist", {
 
