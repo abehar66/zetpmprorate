@@ -16,7 +16,7 @@
         </semantic:titleHeading>
 
          <semantic:titleCustomTextActions>
-            <Button id="_IDGenProrate" icon="sap-icon://upload" text="Prorratear" press=""/>
+            <Button id="_IDGenProrate" icon="sap-icon://upload" text="Prorratear" press="onProrate"/>
         </semantic:titleCustomTextActions>
 
         <semantic:content>
