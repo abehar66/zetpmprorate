@@ -24,7 +24,7 @@
                 id="table"
                 width="auto"
                 items="{
-                    path: '/PartsProrationSet',
+                    path: 'ProrateModel>/ProrateSet',
                     sorter: {
                         path: 'ExpedienteId',
                         descending: false
@@ -83,13 +83,13 @@
                         press=".onPress">
                         <cells>
                             <ObjectIdentifier id="_IDGenObjectIdentifier1" 
-                                title="{ExpedienteId}"/>                            
+                                title="{ProrateModel>ExpedienteId}"/>                            
                         </cells>
-                        <Text id="_IDGenText1" text=""/>
-                        <Text id="_IDGenText2" text=""/>
-                        <Text id="_IDGenText3" text=""/>
-                        <Text id="_IDGenText4" text=""/>
-                        <Text id="_IDGenText5" text=""/>
+                        <Text id="_IDGenText1" text="{ProrateModel>Centro}"/>
+                        <Text id="_IDGenText2" text="{ProrateModel>Modelo}"/>
+                        <Text id="_IDGenText3" text="{ProrateModel>Pieza}"/>
+                        <Text id="_IDGenText4" text="{ProrateModel>Cant}"/>
+                        <Text id="_IDGenText5" text="{ProrateModel>Precio}"/>
                     </ColumnListItem>
                 </items>
             </Table>

@@ -3,8 +3,9 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], function (BaseController, JSONModel, formatter, Filter, FilterOperator) { 
+    "sap/ui/model/FilterOperator",
+    "../model/odataModel",
+], function (BaseController, JSONModel, formatter, Filter, FilterOperator,odataModel) { 
     "use strict"; 
 
     return BaseController.extend("zetpmprorate.controller.Worklist", {
@@ -33,6 +34,15 @@ sap.ui.define([
                 tableNoDataText : this.getResourceBundle().getText("tableNoDataText")
             });
             this.setModel(oViewModel, "worklistView");
+
+            odataModel.init(this);
+
+            this.prorateModel = new JSONModel(
+                {                    
+                    'ProrateSet': [],                    
+                });
+            
+            this.setModel(this.prorateModel, "ProrateModel");    
 
         },
 
@@ -115,6 +125,17 @@ sap.ui.define([
         },
 
         onProrate : function () {
+            const table = this.byId("table");
+            table.setBusy(true)
+            odataModel.getListPiezas()
+            .then(oData=>{
+                table.setBusy(false)
+                this.prorateModel.setProperty('/ProrateSet', oData.results);                
+            })
+            .catch(error=>{
+                table.setBusy(false)
+                console.error(error)
+            });
         },  
 
         /* =========================================================== */
