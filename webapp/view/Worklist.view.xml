@@ -60,6 +60,9 @@
                     <Column id="ExpedienteId">
                         <Text text="{i18n>tableExpedienteIdTitle}" id="ExpedienteIdTitle"/>
                     </Column>
+                    <Column id="ExpedienteName">
+                        <Text text="{i18n>tableExpedienteNameTitle}" id="ExpedienteNameTitle"/>
+                    </Column>
                     <Column id="Centro">
                         <Text text="{i18n>tableCentroTitle}" id="CentroTitle"/>
                     </Column>
@@ -84,12 +87,13 @@
                         <cells>
                             <ObjectIdentifier id="_IDGenObjectIdentifier1" 
                                 title="{ProrateModel>ExpedienteId}"/>                            
-                        </cells>
+                        </cells>                        
+                        <Text id="_IDGenText2" text="{ProrateModel>ExpedienteName}"/>
                         <Text id="_IDGenText1" text="{ProrateModel>Centro}"/>
-                        <Text id="_IDGenText2" text="{ProrateModel>Modelo}"/>
-                        <Text id="_IDGenText3" text="{ProrateModel>Pieza}"/>
-                        <Text id="_IDGenText4" text="{ProrateModel>Cant}"/>
-                        <Text id="_IDGenText5" text="{ProrateModel>Precio}"/>
+                        <Text id="_IDGenText3" text="{ProrateModel>Modelo}"/>
+                        <Text id="_IDGenText4" text="{ProrateModel>Pieza}"/>
+                        <Text id="_IDGenText5" text="{ProrateModel>Cant}"/>
+                        <Text id="_IDGenText6" text="{ProrateModel>Precio}"/>
                     </ColumnListItem>
                 </items>
             </Table>
