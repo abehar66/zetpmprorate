@@ -54,9 +54,17 @@ sap.ui.define([
                    'ExpenseSet': []                   
                 });    
             
+            this.parametersModel = new JSONModel(
+                {                    
+                  'Desde': new Date(),
+                  'Hasta': new Date(),                    
+                });
+       
+            
             this.setModel(this.prorateModel, "ProrateModel");    
             this.setModel(this.expenseModel, "ExpenseModel");   
             this.setModel(this.prorationModel, "ProrationModel");
+            this.setModel(this.parametersModel, "ParametersModel");
 
         },
 
@@ -141,10 +149,12 @@ sap.ui.define([
         onProrate : function () {
             const tablePieza = this.byId("PiezaView--tablePieza");
             const tableComprobante = this.byId("ComprobanteView--tableComprobante");
+            const desde = this.parametersModel.getProperty('/Desde');  
+            const hasta = this.parametersModel.getProperty('/Hasta');  
 
             tablePieza.setBusy(true);            
             tableComprobante.setBusy(true);
-            odataModel.getListProration()
+            odataModel.getListProration(desde,hasta)
             .then(oData=>{
                 tablePieza.setBusy(false)
                 tableComprobante.setBusy(false);                

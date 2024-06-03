@@ -12,12 +12,35 @@
         <semantic:titleHeading>
             <Title
                 text="{i18n>worklistTitle}"
-                level="H2"/>
+                level="H2"/>               
         </semantic:titleHeading>
 
          <semantic:titleCustomTextActions>
             <Button id="_IDGenProrate" icon="sap-icon://upload" text="Prorratear" press="onProrate"/>
-        </semantic:titleCustomTextActions>
+            <Button id="_IDGenPrint" icon="sap-icon://print" text="Imprimir" press="Print"/>
+        </semantic:titleCustomTextActions>     
+
+        <semantic:headerContent>	
+           <VBox alignItems="Center">
+            <Label text="Desde" labelFor="Desde"/>
+            <DatePicker	id="Desde"
+			                value="{ParametersModel>/Desde}"
+			                valueFormat="dd-MM-yyyy"
+                            displayFormat="long"			                			                
+			                secondaryCalendarType="Gregorian"
+			                change="handleChange"
+			                class="sapUiSmallMarginBottom"/>                             
+                     
+           <Label text="Hasta" labelFor="Hasta"/>
+            <DatePicker	id="Hasta"
+			                value="{ParametersModel>/Hasta}"
+			                valueFormat="dd-MM-yyyy"
+                            displayFormat="long"			                			                
+			                secondaryCalendarType="Gregorian"
+			                change="handleChange"
+			                class="sapUiSmallMarginBottom"/> 
+            </VBox >                
+        </semantic:headerContent>  
 
         <semantic:content>
            <IconTabBar
@@ -31,7 +54,7 @@
 					<IconTabFilter id="PiezaTab" text='Piezas' key="pieza">
 						<mvc:XMLView id="PiezaView" viewName="zetpmprorate.view.Tabs.Pieza"></mvc:XMLView>
 					</IconTabFilter>					
-					<IconTabFilter id="ComprobanteTab" text='Comprobante' key="comprobante">
+					<IconTabFilter id="ComprobanteTab" text='Gastos FI' key="comprobante">
 						<mvc:XMLView id="ComprobanteView" viewName="zetpmprorate.view.Tabs.Comprobante"></mvc:XMLView>
 					</IconTabFilter>	
                     </items>                

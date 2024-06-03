@@ -67,14 +67,27 @@ sap.ui.define([
 
             }, 
             
-            getListProration : function () {
-                const sUrlParameters = '$expand=ToExpense,ToParts';                
+            getListProration : function (desde , hasta) {
+                const sUrlParameters = '$expand=ToExpense,ToParts';   
+                
+                let Filters = [
+                    new Filter({
+                        path: 'Desde',
+                        operator: FilterOperator.EQ,
+                        value1: desde
+                    }),
+                    new Filter({
+                        path: 'Hasta',
+                        operator: FilterOperator.EQ,
+                        value1: hasta
+                    }),
+                ];
                 
                 return new Promise(function (resolve, reject) {
 
                     this.odataModel.read(prorateEntity, {
                         urlParameters: sUrlParameters,
-                        filters: null,
+                        filters: Filters,
                         success: oData => {
                             resolve(oData)
                         },
