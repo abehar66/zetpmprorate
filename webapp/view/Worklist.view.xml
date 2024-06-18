@@ -23,20 +23,20 @@
         <semantic:headerContent>	
            <VBox alignItems="Center">
             <Label text="Desde" labelFor="Desde"/>
-            <DatePicker	id="Desde"
-			                value="{ParametersModel>/Desde}"
-			                valueFormat="dd-MM-yyyy"
-                            displayFormat="medium"			                			                
-			                secondaryCalendarType="Gregorian"
-			                change="handleChange"
+            <DatePicker	id="Desde"			                	
+                            value="{path: 'ParametersModel>/Desde', type:'sap.ui.model.type.Date' ,
+                                    formatOptions: { style: 'medium', strictParsing: true}   }"  
+                            displayFormat="medium"                                                     
+                            valueFormat="dd-mm-yyyy"
+			                change="handleChange"                            
 			                class="sapUiSmallMarginBottom"/>                             
                      
            <Label text="Hasta" labelFor="Hasta"/>
             <DatePicker	id="Hasta"
-			                value="{ParametersModel>/Hasta}"
-			                valueFormat="dd-MM-yyyy"
-                            displayFormat="medium"			                			                
-			                secondaryCalendarType="Gregorian"
+			                value="{path: 'ParametersModel>/Hasta', type:'sap.ui.model.type.Date' ,
+                                    formatOptions: { style: 'medium', strictParsing: true}   }"  
+                            displayFormat="medium"                                                     
+                            valueFormat="dd-mm-yyyy"
 			                change="handleChange"
 			                class="sapUiSmallMarginBottom"/> 
             </VBox >                
