@@ -26,7 +26,7 @@
             <DatePicker	id="Desde"
 			                value="{ParametersModel>/Desde}"
 			                valueFormat="dd-MM-yyyy"
-                            displayFormat="long"			                			                
+                            displayFormat="medium"			                			                
 			                secondaryCalendarType="Gregorian"
 			                change="handleChange"
 			                class="sapUiSmallMarginBottom"/>                             
@@ -35,7 +35,7 @@
             <DatePicker	id="Hasta"
 			                value="{ParametersModel>/Hasta}"
 			                valueFormat="dd-MM-yyyy"
-                            displayFormat="long"			                			                
+                            displayFormat="medium"			                			                
 			                secondaryCalendarType="Gregorian"
 			                change="handleChange"
 			                class="sapUiSmallMarginBottom"/> 
