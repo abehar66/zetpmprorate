@@ -15,9 +15,9 @@
                 level="H2"/>               
         </semantic:titleHeading>
 
-         <semantic:titleCustomTextActions>
-            <Button id="_IDGenProrate" icon="sap-icon://upload" text="Prorratear" press="onProrate"/>
-            <Button id="_IDGenPrint" icon="sap-icon://print" text="Imprimir" press="Print"/>
+         <semantic:titleCustomTextActions> 
+            <Button id="_IDGenProrate" icon="sap-icon://kpi-corporate-performance" tooltip="Prorratear" text="Prorratear" press="onProrate" />
+            <Button id="_IDGenPrint"  icon="sap-icon://print" text="Imprimir" tooltip="Imprimir" press="Print"/>
         </semantic:titleCustomTextActions>     
 
         <semantic:headerContent>	

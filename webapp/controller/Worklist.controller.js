@@ -129,7 +129,7 @@ sap.ui.define([
                 var sQuery = oEvent.getParameter("query");
 
                 if (sQuery && sQuery.length > 0) {
-                    aTableSearchState = [new Filter("ExpedienteId", FilterOperator.Contains, sQuery)];
+                    aTableSearchState = [new Filter("ExpedienteName", FilterOperator.Contains, sQuery)];
                 }
                 this._applySearch(aTableSearchState);
             }
@@ -226,9 +226,14 @@ sap.ui.define([
          * @private
          */
         _applySearch: function(aTableSearchState) {
-            var oTable = this.byId("table"),
-                oViewModel = this.getModel("worklistView");
-            oTable.getBinding("items").filter(aTableSearchState, "Application");
+            var oTable = this.byId("tablePieza"),
+                oViewModel = this.getModel("worklistView"),
+                oTable2 = this.byId("tableComprobante");
+                if(oTable){
+                    oTable.getBinding("items").filter(aTableSearchState, "Application");
+                }else if(oTable2){
+                    oTable2.getBinding("items").filter(aTableSearchState, "Application");
+                }
             // changes the noDataText of the list in case there are no filter results
             if (aTableSearchState.length !== 0) {
                 oViewModel.setProperty("/tableNoDataText", this.getResourceBundle().getText("worklistNoDataWithSearchText"));

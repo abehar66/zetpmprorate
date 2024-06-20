@@ -70,8 +70,7 @@
 
                 <items>
                     <ColumnListItem id="_IDGenColumnListItem1"
-                        type="Navigation"
-                        press=".onPress">
+                        >
                         <cells>
                             <ObjectIdentifier id="_IDGenObjectIdentifier1" 
                                 title="{ProrationModel>ExpedienteId}"/>                            
