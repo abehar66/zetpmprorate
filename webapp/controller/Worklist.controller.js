@@ -93,7 +93,24 @@ sap.ui.define([
             } else {
                 sTitle = this.getResourceBundle().getText("worklistTableTitle");
             }
+            
             this.getModel("worklistView").setProperty("/worklistTableTitle", sTitle);
+        },
+
+        onUpdateFinished2 : function (oEvent) {
+            // update the worklist's object counter after the table update
+            var sTitle,
+                oTable2 = oEvent.getSource(),
+                iTotalItems = oEvent.getParameter("total");
+            // only update the counter if the length is final and
+            // the table is not empty
+            if (iTotalItems && oTable2.getBinding("items").isLengthFinal()) {
+                sTitle = this.getResourceBundle().getText("worklistTableTitleCount2", [iTotalItems]);
+            } else {
+                sTitle = this.getResourceBundle().getText("worklistTableTitle2");
+            }
+            
+            this.getModel("worklistView").setProperty("/worklistTableTitle2", sTitle);
         },
 
         /**
