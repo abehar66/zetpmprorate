@@ -44,24 +44,24 @@
             </ComboBox>            
             </HBox>
             <HBox alignItems="Center" id="hbox2">
-            <Label text="Desde: " labelFor="Desde"/>
+            <Label text="Desde: " labelFor="Desde" visible="{ProrationModel>/VisibleDate}" />
             <DatePicker	id="Desde"			                	
                             value="{path: 'ParametersModel>/Desde', type:'sap.ui.model.type.Date' ,
                                     formatOptions: { style: 'medium', strictParsing: true}   }"  
                             displayFormat="medium"                                                     
                             valueFormat="dd-mm-yyyy"
 			                change="handleChange"                            
-			                class="sapUiSmallMarginBottom"/>                             
+			                class="sapUiSmallMarginBottom"  visible="{ProrationModel>/VisibleDate}" />                             
             </HBox>       
             <HBox alignItems="Center" id="hbox3">     
-           <Label text="Hasta: " labelFor="Hasta"/>
+           <Label text="Hasta: " labelFor="Hasta" visible="{ProrationModel>/VisibleDate}"/>
             <DatePicker	id="Hasta"
 			                value="{path: 'ParametersModel>/Hasta', type:'sap.ui.model.type.Date' ,
                                     formatOptions: { style: 'medium', strictParsing: true}   }"  
                             displayFormat="medium"                                                     
                             valueFormat="dd-mm-yyyy"
 			                change="handleChange"
-			                class="sapUiSmallMarginBottom"/> 
+			                class="sapUiSmallMarginBottom" visible="{ProrationModel>/VisibleDate}"/> 
                           
            </HBox>
             </VBox>           

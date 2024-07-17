@@ -56,7 +56,8 @@ sap.ui.define([
                    'TraspasoSet' : [], 
                    'ExpedienteSet' : [],
                    'ExpedienteId' : 'Nuevo',
-                   'ProrateText' : 'Prorratear'
+                   'ProrateText' : 'Prorratear',
+                   'VisibleDate' : true
                 });    
             
             this.parametersModel = new JSONModel(
@@ -518,9 +519,11 @@ sap.ui.define([
 
             if (this.prorationModel.getProperty('/ExpedienteId') === 'Nuevo'){
                 this.prorationModel.setProperty('/ProrateText','Prorratear'); 
+                this.prorationModel.setProperty('/VisibleDate',true);
             }
             else {
                 this.prorationModel.setProperty('/ProrateText','Mostrar');
+                this.prorationModel.setProperty('/VisibleDate',false);
             }   
 
         },     
