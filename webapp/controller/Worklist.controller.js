@@ -176,8 +176,9 @@ sap.ui.define([
                 tablePieza.setBusy(false)
                 tableComprobante.setBusy(false);                
                 let dato = oData.results[0];
-                this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);    
-                tablePieza.getBinding("items").getModel().setProperty("/PartsSet",dato.ToParts.results);   
+                this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);
+                let Tabla = this.Totalize(dato) ;   
+                tablePieza.getBinding("items").getModel().setProperty("/PartsSet",Tabla);   
                 this.prorationModel.setProperty('/ExpenseSet', dato.ToExpense.results);    
                 tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",dato.ToExpense.results);   
                          
@@ -255,7 +256,51 @@ sap.ui.define([
             if (aTableSearchState.length !== 0) {
                 oViewModel.setProperty("/tableNoDataText", this.getResourceBundle().getText("worklistNoDataWithSearchText"));
             }
-        }
+        },
+
+        Totalize: function( expediente ) {
+           const precio_uni = this.ToDecimal(expediente.Precio);
+           let results = [];
+           let Pieza = '';
+           let curr = { };
+           let Suma = 0;
+          
+
+           expediente.ToParts.results.forEach(e => { 
+
+            if ((e.Pieza !== Pieza) && (Suma != 0))
+             {
+                curr.Centro = 'Total';
+                curr.Precio = this.ToDecimal(Suma);
+                Suma = 0;
+                Pieza = e.Pieza;
+                results.push(curr);
+              }            
+            
+            curr = e;
+            results.push(e);     
+
+            Suma = Suma + this.ToDecimal(e.Precio);            
+           });
+
+           curr.Centro = 'Total';
+           curr.Precio = Suma;
+           results.push(curr);
+
+           return results;
+
+        },  
+
+        ToDecimal: function(valor) { 
+          const str = String(valor);
+          const arr = str.split(".");
+          const ent = parseInt(arr[0]);
+          const dec = parseInt(arr[1]);
+
+          const numero = dec * 0.01 + ent;          
+          
+          return numero;
+        }    
 
     });
 });
