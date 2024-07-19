@@ -258,33 +258,55 @@ sap.ui.define([
             }
         },
 
-        Totalize: function( expediente ) {
-           const precio_uni = this.ToDecimal(expediente.Precio);
+        Totalize: function( expediente ) {           
+           const precio_uni = Number.parseFloat(expediente.Precio);
            let results = [];
            let Pieza = '';
            let curr = { };
            let Suma = 0;
+           let Cant = 0;
+           let Total_Precio = 0;
+           let Total_Cant = 0;
           
 
            expediente.ToParts.results.forEach(e => { 
 
-            if ((e.Pieza !== Pieza) && (Suma != 0))
+            if ((e.Pieza !== Pieza) && (Suma !== 0))
              {
+                curr = Object.assign({} , curr);
                 curr.Centro = 'Total';
-                curr.Precio = this.ToDecimal(Suma);
+                curr.Precio = Number.parseFloat(Suma).toFixed(2);
+                curr.Cant = Number.parseFloat(Cant);
                 Suma = 0;
-                Pieza = e.Pieza;
+                Cant = 0;                
                 results.push(curr);
               }            
             
+            Pieza = e.Pieza;            
             curr = e;
+            e.Precio = Number.parseFloat(e.Precio).toFixed(2);
+            e.Cant = Number.parseInt(e.Cant);
             results.push(e);     
 
-            Suma = Suma + this.ToDecimal(e.Precio);            
+            Suma = Suma + Number.parseFloat(e.Precio); 
+            Cant = Cant + Number.parseInt(e.Cant);        
+            Total_Precio = Total_Precio + Number.parseFloat(e.Precio); 
+            Total_Cant = Total_Cant + Number.parseInt(e.Cant);
            });
 
+           curr = Object.assign({} , curr);
            curr.Centro = 'Total';
-           curr.Precio = Suma;
+           curr.Precio = Number.parseFloat(Suma).toFixed(2);
+           curr.Cant = Number.parseFloat(Cant);
+           results.push(curr);
+
+           curr = Object.assign({} , curr);
+           curr.Centro = 'Total';
+           curr.Pieza = '';
+           curr.PiezaDesc = '';
+           curr.Modelo = '';
+           curr.Precio = Number.parseFloat(Total_Precio).toFixed(2);
+           curr.Cant = Number.parseFloat(Total_Cant);
            results.push(curr);
 
            return results;
