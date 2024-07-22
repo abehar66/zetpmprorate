@@ -5,7 +5,8 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "../model/odataModel",
-], function (BaseController, JSONModel, formatter, Filter, FilterOperator,odataModel) { 
+    "sap/m/PDFViewer",
+], function (BaseController, JSONModel, formatter, Filter, FilterOperator,odataModel,PDFViewer) { 
     "use strict"; 
 
     return BaseController.extend("zetpmprorate.controller.Worklist", {
@@ -51,7 +52,8 @@ sap.ui.define([
                 {                    
                    'ProrationSet': [],
                    'PartsSet': [], 
-                   'ExpenseSet': []                   
+                   'ExpenseSet': [],
+                   'TraspasoSet' : [],                   
                 });    
             
             this.parametersModel = new JSONModel(
@@ -66,6 +68,17 @@ sap.ui.define([
             this.setModel(this.prorationModel, "ProrationModel");
             this.setModel(this.parametersModel, "ParametersModel");
 
+        },
+
+        onPrint: function() {
+            const titlePDF = this.getView().getModel("i18n").getProperty("reportPartsTitle");
+            const path = `/sap/opu/odata/sap/ZPM_WEB_FIORI_SRV/FileSet(Id='PRORATE',RefValue='xxx')/$value`;
+            
+            
+            this.pdfViewer = new PDFViewer();
+            this.pdfViewer.setSource(path);
+            this.pdfViewer.setTitle(titlePDF);
+            this.pdfViewer.open();
         },
 
         /* =========================================================== */
@@ -166,6 +179,7 @@ sap.ui.define([
         onProrate : function () {
             const tablePieza = this.byId("PiezaView--tablePieza");
             const tableComprobante = this.byId("ComprobanteView--tableComprobante");
+            const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
             const desde = this.parametersModel.getProperty('/Desde');  
             const hasta = this.parametersModel.getProperty('/Hasta');  
 
@@ -177,10 +191,13 @@ sap.ui.define([
                 tableComprobante.setBusy(false);                
                 let dato = oData.results[0];
                 this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);
-                let Tabla = this.Totalize(dato) ;   
-                tablePieza.getBinding("items").getModel().setProperty("/PartsSet",Tabla);   
+                let tabla = this.TotalizePieza(dato);                   
+                tablePieza.getBinding("items").getModel().setProperty("/PartsSet",tabla);   
                 this.prorationModel.setProperty('/ExpenseSet', dato.ToExpense.results);    
                 tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",dato.ToExpense.results);   
+                let tablaCentro = this.TotalizeCentro(dato);                   
+                this.prorationModel.setProperty('/TraspasoSet', tablaCentro);
+                tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet",tablaCentro);  
                          
             })
             .catch(error=>{
@@ -258,9 +275,10 @@ sap.ui.define([
             }
         },
 
-        Totalize: function( expediente ) {           
+        TotalizePieza: function( expediente ) {                      
            const precio_uni = Number.parseFloat(expediente.Precio);
            let results = [];
+           
            let Pieza = '';
            let curr = { };
            let Suma = 0;
@@ -274,44 +292,83 @@ sap.ui.define([
             if ((e.Pieza !== Pieza) && (Suma !== 0))
              {
                 curr = Object.assign({} , curr);
-                curr.Centro = 'Total';
+                curr.Centro = '';
                 curr.Precio = Number.parseFloat(Suma).toFixed(2);
-                curr.Cant = Number.parseFloat(Cant);
+                curr.Cant = Number.parseInt(Cant);
                 Suma = 0;
                 Cant = 0;                
                 results.push(curr);
               }            
-            
-            Pieza = e.Pieza;            
-            curr = e;
-            e.Precio = Number.parseFloat(e.Precio).toFixed(2);
-            e.Cant = Number.parseInt(e.Cant);
-            results.push(e);     
-
+                        
             Suma = Suma + Number.parseFloat(e.Precio); 
             Cant = Cant + Number.parseInt(e.Cant);        
             Total_Precio = Total_Precio + Number.parseFloat(e.Precio); 
             Total_Cant = Total_Cant + Number.parseInt(e.Cant);
+
+            Pieza = e.Pieza;            
+            curr = e;            
+            e.Cant = Number.parseInt(e.Cant);
+            e.Precio = '';
+            //results.push(e);     
+
            });
 
            curr = Object.assign({} , curr);
-           curr.Centro = 'Total';
+           curr.Centro = '';
            curr.Precio = Number.parseFloat(Suma).toFixed(2);
-           curr.Cant = Number.parseFloat(Cant);
+           curr.Cant = Number.parseInt(Cant);
            results.push(curr);
 
            curr = Object.assign({} , curr);
-           curr.Centro = 'Total';
-           curr.Pieza = '';
+           curr.Centro = '';
+           curr.Pieza = 'Total';
            curr.PiezaDesc = '';
            curr.Modelo = '';
            curr.Precio = Number.parseFloat(Total_Precio).toFixed(2);
-           curr.Cant = Number.parseFloat(Total_Cant);
+           curr.Cant = Number.parseInt(Total_Cant);
            results.push(curr);
 
+           
            return results;
 
         },  
+
+        TotalizeCentro: function( expediente ) {                       
+            const precio_uni = Number.parseFloat(expediente.Precio);
+            let results = [];            
+            let Pieza = '';
+            let curr = { };
+            let Suma = 0;
+            let Cant = 0;
+            let Total_Precio = 0;
+            let Total_Cant = 0;
+
+            expediente.ToParts.results.sort((a, b) => a.Centro.localeCompare(b.Centro));
+           
+ 
+            expediente.ToParts.results.forEach(e => { 
+                                      
+             Suma = Suma + Number.parseFloat(e.Precio); 
+             Cant = Cant + Number.parseInt(e.Cant);                      
+             
+             results.push(e);     
+             curr = e;
+ 
+            }); 
+             
+            curr = Object.assign({} , curr);
+            curr.Centro = 'Total';       
+            curr.Pieza = '';     
+            curr.PiezaDesc = '';
+            curr.Modelo = '';
+            curr.Precio = Number.parseFloat(Suma).toFixed(2);
+            curr.Cant = Number.parseInt(Cant);
+            results.push(curr);
+ 
+            
+            return results;
+ 
+         },  
 
         ToDecimal: function(valor) { 
           const str = String(valor);

@@ -17,7 +17,7 @@
 
          <semantic:titleCustomTextActions> 
             <Button id="_IDGenProrate" icon="sap-icon://kpi-corporate-performance" tooltip="Prorratear" text="Prorratear" press="onProrate" />
-            <Button id="_IDGenPrint"  icon="sap-icon://print" text="Imprimir" tooltip="Imprimir" press="Print"/>
+            <Button id="_IDGenPrint"  icon="sap-icon://print" text="Imprimir" tooltip="Imprimir" press="onPrint"/>
         </semantic:titleCustomTextActions>     
 
         <semantic:headerContent>	
@@ -51,10 +51,13 @@
 				select=""
 				selectedKey="">				
                 <items>
-					<IconTabFilter id="PiezaTab" text='Piezas' key="pieza">
+					<IconTabFilter id="PiezaTab" text='Entrada de Piezas' key="pieza">
 						<mvc:XMLView id="PiezaView" viewName="zetpmprorate.view.Tabs.Pieza"></mvc:XMLView>
-					</IconTabFilter>					
-					<IconTabFilter id="ComprobanteTab" text='Gastos FI' key="comprobante">
+					</IconTabFilter>										
+                    <IconTabFilter id="TraspasoTab" text='Traspaso a Centros' key="traspaso">
+						<mvc:XMLView id="TraspasoView" viewName="zetpmprorate.view.Tabs.Traspaso"></mvc:XMLView>
+					</IconTabFilter>	
+                    <IconTabFilter id="ComprobanteTab" text='Gastos FI' key="comprobante">
 						<mvc:XMLView id="ComprobanteView" viewName="zetpmprorate.view.Tabs.Comprobante"></mvc:XMLView>
 					</IconTabFilter>	
                     </items>                
