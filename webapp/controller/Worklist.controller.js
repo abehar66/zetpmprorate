@@ -71,14 +71,18 @@ sap.ui.define([
         },
 
         onPrint: function() {
+            const oProrationList = this.prorationModel.getProperty('/ProrationSet'); 
             const titlePDF = this.getView().getModel("i18n").getProperty("reportPartsTitle");
-            const path = `/sap/opu/odata/sap/ZPM_WEB_FIORI_SRV/FileSet(Id='PRORATE',RefValue='xxx')/$value`;
-            
+            const path = '';
+
+            if (oProrationList !== undefined) {
+             path = `/sap/opu/odata/sap/ZPM_WEB_FIORI_SRV/FileSet(Id='PRORATE',RefValue=oProrationList[0].RefValue)/$value`;            
             
             this.pdfViewer = new PDFViewer();
             this.pdfViewer.setSource(path);
-            this.pdfViewer.setTitle(titlePDF);
+            this.pdfViewer.setTitle(titlePDF);            
             this.pdfViewer.open();
+            }
         },
 
         /* =========================================================== */
@@ -190,6 +194,7 @@ sap.ui.define([
                 tablePieza.setBusy(false)
                 tableComprobante.setBusy(false);                
                 let dato = oData.results[0];
+                this.prorationModel.setProperty('/ProrationSet', oData.results);
                 this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);
                 let tabla = this.TotalizePieza(dato);                   
                 tablePieza.getBinding("items").getModel().setProperty("/PartsSet",tabla);   
