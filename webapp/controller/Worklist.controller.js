@@ -73,11 +73,19 @@ sap.ui.define([
         onPrint: function() {
             const oProrationList = this.prorationModel.getProperty('/ProrationSet'); 
             const titlePDF = this.getView().getModel("i18n").getProperty("reportPartsTitle");
+            const selectedTab =this.getView().byId("iconTabBar").getSelectedKey();
             
             if ( (oProrationList !== undefined) &&
-                 (oProrationList.length !== 0) ) {
+                 (oProrationList.length !== 0) )  {
             let expediente = oProrationList[0].ExpedienteId;        
-            let path = `/sap/opu/odata/sap/ZPM_WEB_FIORI_SRV/FileSet(Id='PRORATE',RefValue='${expediente}')/$value`;            
+            let id = '';
+
+            if (selectedTab === 'pieza')
+                id = 'PRORATE';
+            else
+                id = 'Traspaso';
+
+            let path = `/sap/opu/odata/sap/ZPM_WEB_FIORI_SRV/FileSet(Id='${id}',RefValue='${expediente}')/$value`;            
             
             this.pdfViewer = new PDFViewer();
             this.pdfViewer.setSource(path);
