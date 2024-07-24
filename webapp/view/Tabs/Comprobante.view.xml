@@ -50,33 +50,26 @@
                     </OverflowToolbar>
                 </headerToolbar>
 
-                <columns>
-                    <Column id="ExpedienteId">
-                        <Text text="{i18n>tableExpedienteIdTitle}" id="ExpedienteIdTitle"/>
-                    </Column>
+                <columns>                    
                     <Column id="ExpedienteName">
                         <Text text="{i18n>tableExpedienteNameTitle}" id="ExpedienteNameTitle"/>
-                    </Column>
-                    <Column id="Centro">
-                        <Text text="{i18n>tableOrdenTitle}" id="OrdenTitle"/>
-                    </Column>
-                    <Column id="Modelo">
+                    </Column>                    
+                    <Column id="Cuenta">
                         <Text text="{i18n>tableCuentaTitle}" id="CuentaTitle"/>
                     </Column>
-                    <Column id="Pieza">
+                    <Column id="Gasto">
                         <Text text="{i18n>tableGastoTitle}" id="GastoTitle"/>
                     </Column>                                        
                 </columns>
 
                 <items>
-                    <ColumnListItem id="_IDGenColumnListItem1"
-                        >
-                        <cells>
-                            <ObjectIdentifier id="_IDGenObjectIdentifier1" 
-                                title="{ProrationModel>ExpedienteId}"/>                            
-                        </cells>                        
-                        <Text id="_IDGenText2" text="{ProrationModel>ExpedienteName}"/>
-                        <Text id="_IDGenText1" text="{ProrationModel>Orden}"/>
+                    <ColumnListItem id="_IDGenColumnListItem1" >  
+                      <customData>
+                      <core:CustomData key="mygasto" value="{ProrationModel>Cuenta}" writeToDom="true" >
+                      </core:CustomData>
+                     </customData>
+
+                        <Text id="_IDGenText2" text="{ProrationModel>ExpedienteName}"/>                        
                         <Text id="_IDGenText3" text="{ProrationModel>Cuenta}"/>
                         <Text id="_IDGenText4" text="{ProrationModel>Gasto}"/>                        
                     </ColumnListItem>

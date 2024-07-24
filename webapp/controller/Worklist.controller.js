@@ -71,19 +71,31 @@ sap.ui.define([
         },
 
         onPrint: function() {
-            const oProrationList = this.prorationModel.getProperty('/ProrationSet'); 
-            const titlePDF = this.getView().getModel("i18n").getProperty("reportPartsTitle");
+            const oProrationList = this.prorationModel.getProperty('/ProrationSet');             
             const selectedTab =this.getView().byId("iconTabBar").getSelectedKey();
+            let expediente = '';
+            let id = '';
+            let titlePDF = '';
             
             if ( (oProrationList !== undefined) &&
                  (oProrationList.length !== 0) )  {
-            let expediente = oProrationList[0].ExpedienteId;        
-            let id = '';
+            expediente = oProrationList[0].ExpedienteId;
 
-            if (selectedTab === 'pieza')
+            if (selectedTab === 'pieza'){
                 id = 'PRORATE';
-            else
-                id = 'Traspaso';
+                titlePDF = this.getView().getModel("i18n").getProperty("reportPartsTitle");
+            }
+
+            if (selectedTab === 'traspaso'){
+                id = 'TRANSFER';
+                titlePDF = this.getView().getModel("i18n").getProperty("reportTransferPartsTitle");
+            }    
+
+            if (selectedTab === 'comprobante'){
+                id = 'EXPENSE';
+                titlePDF = this.getView().getModel("i18n").getProperty("reportExpenseTitle");
+            }
+
 
             let path = `/sap/opu/odata/sap/ZPM_WEB_FIORI_SRV/FileSet(Id='${id}',RefValue='${expediente}')/$value`;            
             
@@ -207,8 +219,9 @@ sap.ui.define([
                 this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);
                 let tabla = this.TotalizePieza(dato);                   
                 tablePieza.getBinding("items").getModel().setProperty("/PartsSet",tabla);   
-                this.prorationModel.setProperty('/ExpenseSet', dato.ToExpense.results);    
-                tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",dato.ToExpense.results);   
+                let tablaExpense = this.TotalizeExpense(dato);
+                this.prorationModel.setProperty('/ExpenseSet', tablaExpense);    
+                tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",tablaExpense);   
                 let tablaCentro = this.TotalizeCentro(dato);                   
                 this.prorationModel.setProperty('/TraspasoSet', tablaCentro);
                 tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet",tablaCentro);  
@@ -383,6 +396,51 @@ sap.ui.define([
             return results;
  
          },  
+
+         TotalizeExpense: function( expediente ) {                       
+            const precio_uni = Number.parseFloat(expediente.Precio);
+            let results = [];
+            
+            let Cuenta = '';
+            let curr = { };
+            let Suma = 0;            
+            let Total_Gasto = 0;
+           
+            expediente.ToExpense.results.sort((a, b) => a.Cuenta.localeCompare(b.Cuenta));            
+            expediente.ToExpense.results.forEach(e => { 
+ 
+             if ((e.Cuenta !== Cuenta) && (Suma !== 0))
+              {
+                 curr = Object.assign({} , curr);
+                 curr.Orden = '';
+                 curr.Gasto = Number.parseFloat(Suma).toFixed(2);                 
+                 Suma = 0;                 
+                 results.push(curr);
+               }            
+                         
+             Suma = Suma + Number.parseFloat(e.Gasto);                     
+             Total_Gasto = Total_Gasto + Number.parseFloat(e.Gasto);              
+ 
+             Cuenta = e.Cuenta;            
+             curr = e;                         
+             curr.Orden = '';             
+             //results.push(e);     
+ 
+            });
+ 
+            curr = Object.assign({} , curr);
+            curr.Orden = '';
+            curr.Gasto = Number.parseFloat(Suma).toFixed(2);            
+            results.push(curr);
+ 
+            curr = Object.assign({} , curr);            
+            curr.Cuenta = 'Total';                        
+            curr.Gasto = Number.parseFloat(Total_Gasto).toFixed(2);            
+            results.push(curr);
+             
+            return results;
+ 
+         }, 
 
         ToDecimal: function(valor) { 
           const str = String(valor);
