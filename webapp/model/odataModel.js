@@ -17,9 +17,8 @@ sap.ui.define([
         const maestroEntity = '/MaestroSet';        
         const prorateEntity = '/ProrationSet';
         const expenseEntity = '/ExpenseProrationSet';
-        const authorityEntity = '/AuthoritySet';
+        const authorityEntity = '/AuthoritySet';        
         
-
         return {
             init: function (caller) {
                 this.caller = caller;
@@ -67,7 +66,7 @@ sap.ui.define([
 
             }, 
             
-            getListProration : function (desde , hasta) {
+            getListProration : function (desde , hasta, expediente = 'Nuevo') {
                 const sUrlParameters = '$expand=ToExpense,ToParts';   
                 
                 let Filters = [
@@ -80,6 +79,11 @@ sap.ui.define([
                         path: 'Hasta',
                         operator: FilterOperator.EQ,
                         value1: hasta
+                    }),
+                    new Filter({
+                        path: 'ExpedienteName',
+                        operator: FilterOperator.EQ,
+                        value1: expediente
                     }),
                 ];
                 
@@ -98,7 +102,7 @@ sap.ui.define([
                 }.bind(this))
 
             },
-            
+                        
             getListMaestros: function (maestro, RefData = null) {
 
                 let Filters = [

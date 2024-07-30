@@ -53,7 +53,8 @@ sap.ui.define([
                    'ProrationSet': [],
                    'PartsSet': [], 
                    'ExpenseSet': [],
-                   'TraspasoSet' : [],                   
+                   'TraspasoSet' : [], 
+                   'ExpedienteSet' : [],
                 });    
             
             this.parametersModel = new JSONModel(
@@ -206,11 +207,12 @@ sap.ui.define([
             const tableComprobante = this.byId("ComprobanteView--tableComprobante");
             const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
             const desde = this.parametersModel.getProperty('/Desde');  
-            const hasta = this.parametersModel.getProperty('/Hasta');  
+            const hasta = this.parametersModel.getProperty('/Hasta'); 
+            const keyExpedienteCombo = this.getView().byId('Expediente').getSelectedKey(); 
 
             tablePieza.setBusy(true);            
             tableComprobante.setBusy(true);
-            odataModel.getListProration(desde,hasta)
+            odataModel.getListProration(desde,hasta,keyExpedienteCombo)
             .then(oData=>{
                 tablePieza.setBusy(false)
                 tableComprobante.setBusy(false);                
@@ -266,6 +268,23 @@ sap.ui.define([
                 console.error(error);
             });
         },  
+
+        onLoadExpediente : function () {
+            this.getView().byId('Expediente').setBusy(true);
+
+            odataModel.getListMaestros('EXPEDIENTE')
+            .then(oData=>{                
+                oData.results.unshift({Key:"Nuevo",Value:"Nuevo"});
+                this.prorationModel.setProperty('/ExpedienteSet', oData.results);   
+                                                            
+            })
+            .catch(error=>{                
+                console.error(error);
+            });
+
+            this.getView().byId('Expediente').setBusy(false);
+
+        },      
 
         /* =========================================================== */
         /* internal methods                                            */

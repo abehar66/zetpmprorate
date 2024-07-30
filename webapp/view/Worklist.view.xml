@@ -2,6 +2,7 @@
     controllerName="zetpmprorate.controller.Worklist"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     xmlns:semantic="sap.f.semantic">
 
     <semantic:SemanticPage
@@ -22,7 +23,25 @@
 
         <semantic:headerContent>	
            <VBox alignItems="Center">
-            <Label text="Desde" labelFor="Desde"/>
+           <HBox alignItems="Center">
+           <Label text="Expediente : " labelFor="Expediente"/>
+           <ComboBox                                 
+                id="Expediente"                                    
+                width="200px"
+                items="{
+                         path: 'ProrationModel>/ExpedienteSet',
+                         sorter: { path: 'Key' }
+                        }"
+                loadItems="onLoadExpediente"
+                showSecondaryValues="true">
+                <core:Item key="{ProrationModel>Key}" 
+                           text="{ProrationModel>Value}" 
+                           additionalText="{ProrationModel>Key}" />
+                           
+            </ComboBox>
+            </HBox>
+            <HBox alignItems="Center">
+            <Label text="Desde: " labelFor="Desde"/>
             <DatePicker	id="Desde"			                	
                             value="{path: 'ParametersModel>/Desde', type:'sap.ui.model.type.Date' ,
                                     formatOptions: { style: 'medium', strictParsing: true}   }"  
@@ -30,8 +49,9 @@
                             valueFormat="dd-mm-yyyy"
 			                change="handleChange"                            
 			                class="sapUiSmallMarginBottom"/>                             
-                     
-           <Label text="Hasta" labelFor="Hasta"/>
+            </HBox> 
+           <HBox alignItems="Center">        
+           <Label text="Hasta: " labelFor="Hasta"/>
             <DatePicker	id="Hasta"
 			                value="{path: 'ParametersModel>/Hasta', type:'sap.ui.model.type.Date' ,
                                     formatOptions: { style: 'medium', strictParsing: true}   }"  
@@ -39,7 +59,9 @@
                             valueFormat="dd-mm-yyyy"
 			                change="handleChange"
 			                class="sapUiSmallMarginBottom"/> 
+            </HBox>                
             </VBox >                
+            
         </semantic:headerContent>  
 
         <semantic:content>
