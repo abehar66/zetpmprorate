@@ -55,6 +55,8 @@ sap.ui.define([
                    'ExpenseSet': [],
                    'TraspasoSet' : [], 
                    'ExpedienteSet' : [],
+                   'ExpedienteId' : 'Nuevo',
+                   'ProrateText' : 'Prorratear'
                 });    
             
             this.parametersModel = new JSONModel(
@@ -68,6 +70,8 @@ sap.ui.define([
             this.setModel(this.expenseModel, "ExpenseModel");   
             this.setModel(this.prorationModel, "ProrationModel");
             this.setModel(this.parametersModel, "ParametersModel");
+
+            this.onLoadExpediente( );
 
         },
 
@@ -208,7 +212,11 @@ sap.ui.define([
             const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
             const desde = this.parametersModel.getProperty('/Desde');  
             const hasta = this.parametersModel.getProperty('/Hasta'); 
-            const keyExpedienteCombo = this.getView().byId('Expediente').getSelectedKey(); 
+            let keyExpedienteCombo = this.getView().byId('Expediente').getSelectedKey(); 
+
+            if (keyExpedienteCombo === ''){
+                keyExpedienteCombo = 'Nuevo';
+            }
 
             tablePieza.setBusy(true);            
             tableComprobante.setBusy(true);
@@ -217,17 +225,33 @@ sap.ui.define([
                 tablePieza.setBusy(false)
                 tableComprobante.setBusy(false);                
                 let dato = oData.results[0];
-                this.prorationModel.setProperty('/ProrationSet', oData.results);
-                this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);
-                let tabla = this.TotalizePieza(dato);                   
-                tablePieza.getBinding("items").getModel().setProperty("/PartsSet",tabla);   
-                let tablaExpense = this.TotalizeExpense(dato);
-                this.prorationModel.setProperty('/ExpenseSet', tablaExpense);    
-                tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",tablaExpense);   
-                let tablaCentro = this.TotalizeCentro(dato);                   
-                this.prorationModel.setProperty('/TraspasoSet', tablaCentro);
-                tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet",tablaCentro);  
-                         
+
+                if (dato !== undefined){
+                   this.prorationModel.setProperty('/ProrationSet', oData.results);
+                   this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);
+                   let tabla = this.TotalizePieza(dato);                   
+                   tablePieza.getBinding("items").getModel().setProperty("/PartsSet",tabla);   
+                   let tablaExpense = this.TotalizeExpense(dato);
+                   this.prorationModel.setProperty('/ExpenseSet', tablaExpense);    
+                   tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",tablaExpense);   
+                   let tablaCentro = this.TotalizeCentro(dato);                   
+                   this.prorationModel.setProperty('/TraspasoSet', tablaCentro);
+                   tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet",tablaCentro);  
+                   
+                   if (keyExpedienteCombo === 'Nuevo'){
+                    this.onLoadExpediente( );
+                    }
+
+                }              
+               else {
+                   this.prorationModel.setProperty('/ProrationSet', []);
+                   this.prorationModel.setProperty('/PartsSet', []);                                     
+                   tablePieza.getBinding("items").getModel().setProperty("/PartsSet",[]);                      
+                   this.prorationModel.setProperty('/ExpenseSet', []);    
+                   tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",[]);                      
+                   this.prorationModel.setProperty('/TraspasoSet', []);
+                   tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet",[]);  
+               } 
             })
             .catch(error=>{
                 tablePieza.setBusy(false);
@@ -246,7 +270,7 @@ sap.ui.define([
             odataModel.getListPieza()
             .then(oData=>{
                 tablePieza.setBusy(false)
-                this.prorateModel.setProperty('/ProrateSet', oData.results);    
+                this.prorateModel.setProperty('/ProrateSet', oData.results);                    
                 tablePieza.getBinding("items").getModel().setProperty("/ProrateSet",oData.results);   
                          
             })
@@ -270,19 +294,26 @@ sap.ui.define([
         },  
 
         onLoadExpediente : function () {
-            this.getView().byId('Expediente').setBusy(true);
+            const comboExpediente = this.getView().byId('Expediente');
 
+             if (comboExpediente !== undefined) {   
+                comboExpediente.setBusy(true);
+            }   
+            
             odataModel.getListMaestros('EXPEDIENTE')
             .then(oData=>{                
                 oData.results.unshift({Key:"Nuevo",Value:"Nuevo"});
-                this.prorationModel.setProperty('/ExpedienteSet', oData.results);   
+                this.prorationModel.setProperty('/ExpedienteSet', oData.results); 
+                this.prorationModel.setProperty('/ExpedienteId','Nuevo'); 
                                                             
             })
             .catch(error=>{                
                 console.error(error);
             });
 
-            this.getView().byId('Expediente').setBusy(false);
+            if (comboExpediente !== undefined) {   
+                comboExpediente.setBusy(false);
+            }
 
         },      
 
@@ -470,7 +501,28 @@ sap.ui.define([
           const numero = dec * 0.01 + ent;          
           
           return numero;
-        }    
+        },
 
+        onChangeExpediente: function() {
+            const tablePieza = this.byId("PiezaView--tablePieza");
+            const tableComprobante = this.byId("ComprobanteView--tableComprobante");
+            const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
+
+            this.prorationModel.setProperty('/ProrationSet', []);
+            this.prorationModel.setProperty('/PartsSet', []);                                     
+            tablePieza.getBinding("items").getModel().setProperty("/PartsSet",[]);                      
+            this.prorationModel.setProperty('/ExpenseSet', []);    
+            tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",[]);                      
+            this.prorationModel.setProperty('/TraspasoSet', []);
+            tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet",[]);  
+
+            if (this.prorationModel.getProperty('/ExpedienteId') === 'Nuevo'){
+                this.prorationModel.setProperty('/ProrateText','Prorratear'); 
+            }
+            else {
+                this.prorationModel.setProperty('/ProrateText','Mostrar');
+            }   
+
+        },     
     });
 });

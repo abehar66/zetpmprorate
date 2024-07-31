@@ -17,30 +17,33 @@
         </semantic:titleHeading>
 
          <semantic:titleCustomTextActions> 
-            <Button id="_IDGenProrate" icon="sap-icon://kpi-corporate-performance" tooltip="Prorratear" text="Prorratear" press="onProrate" />
+            <Button id="_IDGenProrate" icon="sap-icon://kpi-corporate-performance" tooltip="Prorratear" text="{ProrationModel>/ProrateText}" press="onProrate" />
             <Button id="_IDGenPrint"  icon="sap-icon://print" text="Imprimir" tooltip="Imprimir" press="onPrint"/>
         </semantic:titleCustomTextActions>     
 
         <semantic:headerContent>	
-           <VBox alignItems="Center">
-           <HBox alignItems="Center">
+           	
+           <VBox alignItems="Center"  id="vbox">
+           <HBox alignItems="Center" id="hbox1">
            <Label text="Expediente : " labelFor="Expediente"/>
            <ComboBox                                 
                 id="Expediente"                                    
                 width="200px"
+                selectedKey="{ProrationModel>/ExpedienteId}"
+                change="onChangeExpediente"
                 items="{
                          path: 'ProrationModel>/ExpedienteSet',
                          sorter: { path: 'Key' }
                         }"
                 loadItems="onLoadExpediente"
-                showSecondaryValues="true">
+                showSecondaryValues="true" >
                 <core:Item key="{ProrationModel>Key}" 
                            text="{ProrationModel>Value}" 
                            additionalText="{ProrationModel>Key}" />
                            
-            </ComboBox>
+            </ComboBox>            
             </HBox>
-            <HBox alignItems="Center">
+            <HBox alignItems="Center" id="hbox2">
             <Label text="Desde: " labelFor="Desde"/>
             <DatePicker	id="Desde"			                	
                             value="{path: 'ParametersModel>/Desde', type:'sap.ui.model.type.Date' ,
@@ -49,8 +52,8 @@
                             valueFormat="dd-mm-yyyy"
 			                change="handleChange"                            
 			                class="sapUiSmallMarginBottom"/>                             
-            </HBox> 
-           <HBox alignItems="Center">        
+            </HBox>       
+            <HBox alignItems="Center" id="hbox3">     
            <Label text="Hasta: " labelFor="Hasta"/>
             <DatePicker	id="Hasta"
 			                value="{path: 'ParametersModel>/Hasta', type:'sap.ui.model.type.Date' ,
@@ -59,9 +62,10 @@
                             valueFormat="dd-mm-yyyy"
 			                change="handleChange"
 			                class="sapUiSmallMarginBottom"/> 
-            </HBox>                
-            </VBox >                
-            
+                          
+           </HBox>
+            </VBox>           
+             
         </semantic:headerContent>  
 
         <semantic:content>
