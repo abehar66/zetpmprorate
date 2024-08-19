@@ -77,6 +77,9 @@
 				select=""
 				selectedKey="">				
                 <items>
+                    <IconTabFilter id="PendienteTab" text='Ordenes Pendientes' key="orderprorate">
+						<mvc:XMLView id="OrdenView" viewName="zetpmprorate.view.Tabs.Orden"></mvc:XMLView>
+					</IconTabFilter>	
 					<IconTabFilter id="PiezaTab" text='Gastos por Piezas' key="pieza">
 						<mvc:XMLView id="PiezaView" viewName="zetpmprorate.view.Tabs.Pieza"></mvc:XMLView>
 					</IconTabFilter>										
@@ -85,7 +88,7 @@
 					</IconTabFilter>	
                     <IconTabFilter id="ComprobanteTab" text='Gastos FI' key="comprobante">
 						<mvc:XMLView id="ComprobanteView" viewName="zetpmprorate.view.Tabs.Comprobante"></mvc:XMLView>
-					</IconTabFilter>	
+					</IconTabFilter>	                     
                     </items>                
 			</IconTabBar>     
         </semantic:content>        

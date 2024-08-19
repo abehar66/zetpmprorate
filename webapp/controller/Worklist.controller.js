@@ -57,6 +57,7 @@ sap.ui.define([
                    'ExpedienteSet' : [],
                    'ExpedienteId' : 'Nuevo',
                    'ProrateText' : 'Prorratear',
+                   'OrdenSet' : [],
                    'VisibleDate' : true
                 });    
             
@@ -73,6 +74,7 @@ sap.ui.define([
             this.setModel(this.parametersModel, "ParametersModel");
 
             this.onLoadExpediente( );
+           
 
         },
 
@@ -241,6 +243,7 @@ sap.ui.define([
                    
                    if (keyExpedienteCombo === 'Nuevo'){
                     this.onLoadExpediente( );
+                    this.onLoadOrden( );
                     }
 
                 }              
@@ -526,6 +529,16 @@ sap.ui.define([
                 this.prorationModel.setProperty('/VisibleDate',false);
             }   
 
-        },     
+        },    
+
+        onLoadOrden: function() { 
+            odataModel.getListOrders()
+            .then(oData=>{                                
+                this.prorationModel.setProperty('/OrdenSet', oData.results);                                                                             
+            })
+            .catch(error=>{                
+                console.error(error);
+            });
+        },    
     });
 });

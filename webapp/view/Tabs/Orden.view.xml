@@ -1,0 +1,80 @@
+<mvc:View 
+  id="OrdenView"  
+  controllerName="zetpmprorate.controller.Worklist"  
+  xmlns="sap.m" 
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:f="sap.ui.layout.form"
+  xmlns:core="sap.ui.core" 
+  xmlns:m="sap.m" 
+  xmlns:l="sap.ui.layout" >  
+  <f:SimpleForm		
+		id="OrdenForm"
+		columnsL="3"
+		columnsM="3"
+		editable="true"
+		layout="ResponsiveGridLayout">		
+		<f:content>	
+        <Table
+                id="tableComprobante"
+                width="auto"
+                items="{
+                    path: 'ProrationModel>/OrdenSet',
+                    sorter: {
+                        path: 'Aufnr',
+                        descending: false
+                    }
+                }"
+                noDataText="{worklistView>/tableNoDataText}"
+                busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+                growing="true"
+                growingScrollToLoad="true"
+                updateFinished=".onLoadOrden">
+
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            id="tableHeader"
+                            text="Ordenes Pendientes de Prorateo"
+                            level="H3"/>
+                        <ToolbarSpacer />
+                        <SearchField
+                            id="searchField"
+                            tooltip="{i18n>worklistSearchTooltip}"
+                            search=".onSearch">
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    maxWidth="200px"
+                                    priority="NeverOverflow"/>
+                            </layoutData>
+                        </SearchField>
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>                    
+                    <Column id="AufnrCol">
+                        <Text text="{i18n>tableOrdenTitle}" id="Aufnr"/>
+                    </Column>                    
+                    <Column id="AufnrTxtCol">
+                        <Text text="{i18n>tableOrdenTxtTitle}" id="AufnrText"/>
+                    </Column>
+                    <Column id="EquipmentCol">
+                        <Text text="{i18n>tableEquipoTitle}" id="Equipment"/>
+                    </Column>        
+                     <Column id="FechaCol">
+                        <Text text="{i18n>tableFechaTitle}" id="Fecha"/>
+                    </Column>                                    
+                </columns>
+
+                <items>
+                    <ColumnListItem id="_IDGenColumnListItem1" >                        
+                        <Text id="_IDGenText2" text="{ProrationModel>Aufnr}"/>                        
+                        <Text id="_IDGenText3" text="{ProrationModel>AufnrTxt}"/>
+                        <Text id="_IDGenText4" text="{ProrationModel>Equipment}"/>                        
+                        <Text id="_IDGenText5" text="{ProrationModel>Erdat}"/>                                                       
+                        
+                    </ColumnListItem>
+                </items>
+            </Table>        
+        </f:content>
+    </f:SimpleForm>	
+</mvc:View> 

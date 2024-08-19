@@ -18,6 +18,7 @@ sap.ui.define([
         const prorateEntity = '/ProrationSet';
         const expenseEntity = '/ExpenseProrationSet';
         const authorityEntity = '/AuthoritySet';        
+        const orderEntity = '/OrderProrateSet';        
         
         return {
             init: function (caller) {
@@ -185,6 +186,32 @@ sap.ui.define([
                         }
                     });
                 }.bind(this))
+            },
+
+            getListOrders : function (idtaller=1) {
+
+                let Filters = [
+                    new Filter({
+                        path: 'Taller',
+                        operator: FilterOperator.EQ,
+                        value1: idtaller
+                    })                    
+                ];
+
+                
+                return new Promise(function (resolve, reject) {
+
+                    this.odataModel.read(orderEntity, {                        
+                        filters: Filters,
+                        success: oData => {
+                            resolve(oData)
+                        },
+                        error: e => {
+                            reject(e)
+                        }
+                    });
+                }.bind(this))
+
             },
 
             
