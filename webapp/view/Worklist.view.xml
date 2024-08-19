@@ -42,7 +42,7 @@
                            additionalText="{ProrationModel>Key}" />
                            
             </ComboBox>            
-            </HBox>
+            </HBox>            
             <HBox alignItems="Center" id="hbox2">
             <Label text="Desde: " labelFor="Desde" visible="{ProrationModel>/VisibleDate}" />
             <DatePicker	id="Desde"			                	
@@ -51,8 +51,8 @@
                             displayFormat="medium"                                                     
                             valueFormat="dd-mm-yyyy"
 			                change="handleChange"                            
-			                class="sapUiSmallMarginBottom"  visible="{ProrationModel>/VisibleDate}" />                             
-            </HBox>       
+			                 visible="{ProrationModel>/VisibleDate}" />                             
+            </HBox>                   
             <HBox alignItems="Center" id="hbox3">     
            <Label text="Hasta: " labelFor="Hasta" visible="{ProrationModel>/VisibleDate}"/>
             <DatePicker	id="Hasta"
@@ -61,10 +61,10 @@
                             displayFormat="medium"                                                     
                             valueFormat="dd-mm-yyyy"
 			                change="handleChange"
-			                class="sapUiSmallMarginBottom" visible="{ProrationModel>/VisibleDate}"/> 
+			                visible="{ProrationModel>/VisibleDate}"/> 
                           
            </HBox>
-            </VBox>           
+           </VBox>           
              
         </semantic:headerContent>  
 
@@ -77,7 +77,7 @@
 				select=""
 				selectedKey="">				
                 <items>
-					<IconTabFilter id="PiezaTab" text='Entrada de Piezas' key="pieza">
+					<IconTabFilter id="PiezaTab" text='Gastos por Piezas' key="pieza">
 						<mvc:XMLView id="PiezaView" viewName="zetpmprorate.view.Tabs.Pieza"></mvc:XMLView>
 					</IconTabFilter>										
                     <IconTabFilter id="TraspasoTab" text='Traspaso a Centros' key="traspaso">
