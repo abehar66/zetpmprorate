@@ -54,6 +54,12 @@
                     <Column id="ExpedienteName">
                         <Text text="{i18n>tableExpedienteNameTitle}" id="ExpedienteNameTitle"/>
                     </Column>                    
+                    <Column id="Orden">
+                        <Text text="{i18n>tableOrdenTitle}" id="OrdenTitle"/>
+                    </Column>
+                    <Column id="Mblnr">
+                        <Text text="{i18n>tableDocMaterialTitle}" id="DocTitle"/>
+                    </Column>
                     <Column id="Cuenta">
                         <Text text="{i18n>tableCuentaTitle}" id="CuentaTitle"/>
                     </Column>
@@ -68,10 +74,11 @@
                       <core:CustomData key="mygasto" value="{ProrationModel>Cuenta}" writeToDom="true" >
                       </core:CustomData>
                      </customData>
-
-                        <Text id="_IDGenText2" text="{ProrationModel>ExpedienteName}"/>                        
-                        <Text id="_IDGenText3" text="{ProrationModel>Cuenta}"/>
-                        <Text id="_IDGenText4" text="{ProrationModel>Gasto}"/>                        
+                        <Text id="_IDGenText2" text="{ProrationModel>ExpedienteName}"/>
+                        <Text id="_IDGenText3" text="{ProrationModel>Orden}"/>
+                        <Text id="_IDGenText4" text="{ProrationModel>Mblnr}"/>                                                
+                        <Text id="_IDGenText5" text="{ProrationModel>Cuenta}"/>
+                        <Text id="_IDGenText6" text="{ProrationModel>Gasto}"/>                        
                     </ColumnListItem>
                 </items>
             </Table>        
