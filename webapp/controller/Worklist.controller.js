@@ -456,14 +456,28 @@ sap.ui.define([
             let results = [];
             
             let Cuenta = '';
+            let Mblnr = '';
+            let Orden = '';
             let curr = { };
             let Suma = 0;            
             let Total_Gasto = 0;
            
-            expediente.ToExpense.results.sort((a, b) => a.Cuenta.localeCompare(b.Cuenta));            
+            //expediente.ToExpense.results.sort((a, b) => a.Cuenta.localeCompare(b.Cuenta));            
+            expediente.ToExpense.results.sort(function(a, b) { 
+                if (a.Orden.localeCompare(b.Orden) > 0) return 1;
+                if (a.Orden.localeCompare(b.Orden) < 0) return -1;
+                if (a.Mblnr.localeCompare(b.Mblnr) > 0) return 1;
+                if (a.Mblnr.localeCompare(b.Mblnr) < 0) return -1;
+                if (a.Cuenta.localeCompare(b.Cuenta) > 0) return 1;
+                if (a.Cuenta.localeCompare(b.Cuenta) < 0) return -1;
+                return 0;
+            });
+
             expediente.ToExpense.results.forEach(e => { 
  
-             if ((e.Cuenta !== Cuenta) && (Suma !== 0))
+             if ((( e.Orden !== Orden || 
+                    e.Mblnr !== Mblnr ||
+                    e.Cuenta !== Cuenta )) && (Suma !== 0))
               {
                  curr = Object.assign({} , curr);
                  //curr.Orden = '';
@@ -476,6 +490,8 @@ sap.ui.define([
              Total_Gasto = Total_Gasto + Number.parseFloat(e.Gasto);              
  
              Cuenta = e.Cuenta;            
+             Orden = e.Orden;
+             Mblnr = e.Mblnr;
              curr = e;                         
              //curr.Orden = '';             
              //results.push(e);     
@@ -489,6 +505,8 @@ sap.ui.define([
  
             curr = Object.assign({} , curr);            
             curr.Cuenta = 'Total';                        
+            curr.Orden = '';
+            curr.Mblnr = '';
             curr.Gasto = Number.parseFloat(Total_Gasto).toFixed(2);            
             results.push(curr);
              
