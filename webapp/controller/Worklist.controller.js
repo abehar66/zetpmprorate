@@ -466,7 +466,7 @@ sap.ui.define([
              if ((e.Cuenta !== Cuenta) && (Suma !== 0))
               {
                  curr = Object.assign({} , curr);
-                 curr.Orden = '';
+                 //curr.Orden = '';
                  curr.Gasto = Number.parseFloat(Suma).toFixed(2);                 
                  Suma = 0;                 
                  results.push(curr);
@@ -477,13 +477,13 @@ sap.ui.define([
  
              Cuenta = e.Cuenta;            
              curr = e;                         
-             curr.Orden = '';             
+             //curr.Orden = '';             
              //results.push(e);     
  
             });
  
             curr = Object.assign({} , curr);
-            curr.Orden = '';
+            //curr.Orden = '';
             curr.Gasto = Number.parseFloat(Suma).toFixed(2);            
             results.push(curr);
  
