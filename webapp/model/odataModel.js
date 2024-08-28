@@ -67,7 +67,7 @@ sap.ui.define([
 
             }, 
             
-            getListProration : function (desde , hasta, expediente = 'Nuevo') {
+            getListProration : function (desde, hasta, expediente = 'Nuevo') {
                 const sUrlParameters = '$expand=ToExpense,ToParts';   
                 
                 let Filters = [

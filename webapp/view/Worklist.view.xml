@@ -19,7 +19,10 @@
          <semantic:titleCustomTextActions> 
             <Button id="_IDGenProrate" icon="sap-icon://kpi-corporate-performance" tooltip="Prorratear" 
                                        text="Prorratear" press="onProrate" visible="{ProrationModel>/VisibleProrate}" /> 
-            <Button id="_IDGenMostrar" icon="sap-icon://display" tooltip="Mostrar" text="Mostrar" press="onDisplay" />
+            <Button id="_IDGenMostrar1" icon="sap-icon://display" tooltip="Mostrar Ordenes" 
+                                        text="Mostrar Ordenes" press="onDisplayOrden"  visible="{ProrationModel>/VisibleProrate}" /> 
+            <Button id="_IDGenMostrar2" icon="sap-icon://display" tooltip="Mostrar Expediente" 
+                                        text="Mostrar Expediente" press="onDisplayExpediente" visible="{ProrationModel>/VisibleExpediente}" />             
             <Button id="_IDGenPrint"  icon="sap-icon://print" text="Imprimir" tooltip="Imprimir" press="onPrint"/>
         </semantic:titleCustomTextActions>     
 
@@ -46,24 +49,24 @@
             </ComboBox>            
             </HBox>            
             <HBox alignItems="Center" id="hbox2">
-            <Label text="Desde: " labelFor="Desde" visible="{ProrationModel>/VisibleDate}" />
+            <Label text="Desde: " labelFor="Desde" visible="{ProrationModel>/VisibleProrate}" />
             <DatePicker	id="Desde"			                	
                             value="{path: 'ParametersModel>/Desde', type:'sap.ui.model.type.Date' ,
                                     formatOptions: { style: 'medium', strictParsing: true}   }"  
                             displayFormat="medium"                                                     
                             valueFormat="dd-mm-yyyy"
 			                change="handleChange"                            
-			                 visible="{ProrationModel>/VisibleDate}" />                             
+			                 visible="{ProrationModel>/VisibleProrate}" />                             
             </HBox>                   
             <HBox alignItems="Center" id="hbox3">     
-           <Label text="Hasta: " labelFor="Hasta" visible="{ProrationModel>/VisibleDate}"/>
+           <Label text="Hasta: " labelFor="Hasta" visible="{ProrationModel>/VisibleProrate}"/>
             <DatePicker	id="Hasta"
 			                value="{path: 'ParametersModel>/Hasta', type:'sap.ui.model.type.Date' ,
                                     formatOptions: { style: 'medium', strictParsing: true}   }"  
                             displayFormat="medium"                                                     
                             valueFormat="dd-mm-yyyy"
 			                change="handleChange"
-			                visible="{ProrationModel>/VisibleDate}"/> 
+			                visible="{ProrationModel>/VisibleProrate}"/> 
                           
            </HBox>
            </VBox>           
@@ -79,7 +82,7 @@
 				select=""
 				selectedKey="">				
                 <items>
-                    <IconTabFilter id="PendienteTab" text='Ordenes Pendientes' key="orderprorate">
+                    <IconTabFilter id="PendienteTab" text="{ProrationModel>/orderTextStatus}" key="orderprorate">
 						<mvc:XMLView id="OrdenView" viewName="zetpmprorate.view.Tabs.Orden"></mvc:XMLView>
 					</IconTabFilter>	
 					<IconTabFilter id="PiezaTab" text='Gastos por Piezas' key="pieza">

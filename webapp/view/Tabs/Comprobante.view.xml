@@ -63,7 +63,7 @@
                     <Column id="Cuenta">
                         <Text text="{i18n>tableCuentaTitle}" id="CuentaTitle"/>
                     </Column>
-                    <Column id="Gasto">
+                    <Column id="Gasto" hAlign="Center">
                         <Text text="{i18n>tableGastoTitle}" id="GastoTitle"/>
                     </Column>                                        
                 </columns>
@@ -78,7 +78,10 @@
                         <Text id="_IDGenText3" text="{ProrationModel>Orden}"/>
                         <Text id="_IDGenText4" text="{ProrationModel>Mblnr}"/>                                                
                         <Text id="_IDGenText5" text="{ProrationModel>Cuenta}"/>
-                        <Text id="_IDGenText6" text="{ProrationModel>Gasto}"/>                        
+                        <ObjectNumber number="{
+								path: 'ProrationModel>Gasto'                                
+							}" />
+                                                
                     </ColumnListItem>
                 </items>
             </Table>        

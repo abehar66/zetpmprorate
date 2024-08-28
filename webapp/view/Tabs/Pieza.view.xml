@@ -60,10 +60,10 @@
                      <Column id="Modelo">
                         <Text text="{i18n>tableModeloTitle}" id="ModeloTitle"/>
                     </Column>                    
-                    <Column id="Cant">
+                    <Column id="Cant" hAlign="Center">
                         <Text text="{i18n>tableCantTitle}" id="CantTitle"/>
                     </Column>
-                    <Column id="Precio">
+                    <Column id="Precio" hAlign="Center">
                         <Text text="{i18n>tablePrecioTitle}" id="PrecioTitle"/>
                     </Column>                    
                 </columns>
@@ -78,9 +78,13 @@
                         <Text id="_IDGenText2" text="{ProrationModel>ExpedienteName}"/>
                         <Text id="_IDGenText4" text="{ProrationModel>Pieza}"/>
                         <Text id="_IDGenText5" text="{ProrationModel>PiezaDesc}"/>
-                        <Text id="_IDGenText6" text="{ProrationModel>Modelo}"/>                                                
-                        <Text id="_IDGenText8" text="{ProrationModel>Cant}"/>
-                        <Text id="_IDGenText9" text="{ProrationModel>Precio}"/>
+                        <Text id="_IDGenText6" text="{ProrationModel>Modelo}"/>                                                                       
+                        <ObjectNumber number="{
+								path: 'ProrationModel>Cant'                                
+							}" />
+                        <ObjectNumber number="{
+								path: 'ProrationModel>Precio'                                
+							}" />
                     </ColumnListItem>
                 </items>
             </Table>

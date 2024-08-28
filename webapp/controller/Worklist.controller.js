@@ -57,9 +57,10 @@ sap.ui.define([
                     'ExpedienteSet': [],
                     'ExpedienteId': 'Nuevo',
                     'ProrateText': 'Prorratear',
-                    'OrdenSet': [],
-                    'VisibleDate': true,
+                    'OrdenSet': [],                    
                     'VisibleProrate': true,
+                    'VisibleExpediente': false,
+                    'orderTextStatus': 'Ordenes Pendientes',
                 });
 
             this.parametersModel = new JSONModel(
@@ -105,13 +106,14 @@ sap.ui.define([
                     titlePDF = this.getView().getModel("i18n").getProperty("reportExpenseTitle");
                 }
 
-
+                if (id !== ''){
                 let path = `/sap/opu/odata/sap/ZPM_WEB_FIORI_SRV/FileSet(Id='${id}',RefValue='${expediente}')/$value`;
 
                 this.pdfViewer = new PDFViewer();
                 this.pdfViewer.setSource(path);
                 this.pdfViewer.setTitle(titlePDF);
                 this.pdfViewer.open();
+                }
             }
         },
 
@@ -210,49 +212,60 @@ sap.ui.define([
             oTable.getBinding("items").refresh();
         },
 
-        onDisplay: function () {
+        onDisplayOrden: function () {
             const tablePieza = this.byId("PiezaView--tablePieza");
             const tableComprobante = this.byId("ComprobanteView--tableComprobante");
-            const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
-            const desde = this.parametersModel.getProperty('/Desde');
-            const hasta = this.parametersModel.getProperty('/Hasta');
-            let keyExpedienteCombo = this.getView().byId('Expediente').getSelectedKey();
+            const tableTraspaso = this.byId("TraspasoView--tableTraspaso");   
+            const tableOrder = this.byId("OrdenView--tableOrder");           
             
+            this.prorationModel.setProperty('/ProrationSet', []);
+            this.prorationModel.setProperty('/PartsSet', []);
+            tablePieza.getBinding("items").getModel().setProperty("/PartsSet", []);
+            this.prorationModel.setProperty('/ExpenseSet', []);
+            tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", []);
+            this.prorationModel.setProperty('/TraspasoSet', []);
+            tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", []);     
+            this.prorationModel.setProperty('/OrdenSet', []);
+            tableOrder.getBinding("items").getModel().setProperty("/OrdenSet", []);       
 
-            if (keyExpedienteCombo !== 'Nuevo') {
-                this.onProrate();                
-            }    
-            else {
-               this.onLoadOrden();
-               this.prorationModel.setProperty('/ProrationSet', []);
-               this.prorationModel.setProperty('/PartsSet', []);
-               tablePieza.getBinding("items").getModel().setProperty("/PartsSet", []);
-               this.prorationModel.setProperty('/ExpenseSet', []);
-               tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", []);
-               this.prorationModel.setProperty('/TraspasoSet', []);
-               tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", []);   
-            }    
-            
+            this.onLoadOrden();
+
         },
 
-        onProrate: function () {
+        onDisplayExpediente: function () {           
             const tablePieza = this.byId("PiezaView--tablePieza");
             const tableComprobante = this.byId("ComprobanteView--tableComprobante");
             const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
+            const tableOrder = this.byId("OrdenView--tableOrder");  
+
             const desde = this.parametersModel.getProperty('/Desde');
             const hasta = this.parametersModel.getProperty('/Hasta');
-            let keyExpedienteCombo = this.getView().byId('Expediente').getSelectedKey();
 
-            if (keyExpedienteCombo === '') {
-                keyExpedienteCombo = 'Nuevo';
-            }
+            this.prorationModel.setProperty('/ProrationSet', []);
+            this.prorationModel.setProperty('/PartsSet', []);
+            tablePieza.getBinding("items").getModel().setProperty("/PartsSet", []);
+            this.prorationModel.setProperty('/ExpenseSet', []);
+            tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", []);
+            this.prorationModel.setProperty('/TraspasoSet', []);
+            tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", []);
+            this.prorationModel.setProperty('/OrdenSet', []);
+            tableOrder.getBinding("items").getModel().setProperty("/OrdenSet", []);
 
             tablePieza.setBusy(true);
             tableComprobante.setBusy(true);
-            odataModel.getListProration(desde, hasta, keyExpedienteCombo)
+            tableTraspaso.setBusy(true);
+            tableOrder.setBusy(true);            
+
+            let keyExpedienteCombo = this.getView().byId('Expediente').getSelectedKey();
+            this.onLoadOrden(keyExpedienteCombo);
+
+            odataModel.getListProration(desde,hasta,keyExpedienteCombo)
                 .then(oData => {
                     tablePieza.setBusy(false)
                     tableComprobante.setBusy(false);
+                    tableTraspaso.setBusy(false);
+                    tableOrder.setBusy(false);
+
                     let dato = oData.results[0];
 
                     if (dato !== undefined) {
@@ -267,68 +280,85 @@ sap.ui.define([
 
                         let tablaCentro = this.TotalizeCentro(dato);
                         this.prorationModel.setProperty('/TraspasoSet', tablaCentro);
-                        tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", tablaCentro);
+                        tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", tablaCentro);                                                
 
-                        if (keyExpedienteCombo === 'Nuevo') {
-                            this.onLoadExpediente();                            
-                        }
-
-                        this.onLoadOrden();
-
-                    }
-                    else {
-                        this.prorationModel.setProperty('/ProrationSet', []);
-                        this.prorationModel.setProperty('/PartsSet', []);
-                        tablePieza.getBinding("items").getModel().setProperty("/PartsSet", []);
-                        this.prorationModel.setProperty('/ExpenseSet', []);
-                        tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", []);
-                        this.prorationModel.setProperty('/TraspasoSet', []);
-                        tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", []);
-                    }
+                    }                   
                 })
                 .catch(error => {
                     tablePieza.setBusy(false);
                     tableComprobante.setBusy(false);
+                    tableTraspaso.setBusy(false);
+                    tableOrder.setBusy(false);
                     console.error(error);
+
                 });
 
         },
 
-        onProrate1: function () {
+        onProrate: function () {
             const tablePieza = this.byId("PiezaView--tablePieza");
             const tableComprobante = this.byId("ComprobanteView--tableComprobante");
+            const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
+            const tableOrder = this.byId("OrdenView--tableOrder");  
+
+            const desde = this.parametersModel.getProperty('/Desde');
+            const hasta = this.parametersModel.getProperty('/Hasta');     
+            
+            this.prorationModel.setProperty('/ProrationSet', []);
+            this.prorationModel.setProperty('/PartsSet', []);
+            tablePieza.getBinding("items").getModel().setProperty("/PartsSet", []);
+            this.prorationModel.setProperty('/ExpenseSet', []);
+            tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", []);
+            this.prorationModel.setProperty('/TraspasoSet', []);
+            tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", []);
+            this.prorationModel.setProperty('/OrdenSet', []);
+            tableOrder.getBinding("items").getModel().setProperty("/OrdenSet", []);
 
             tablePieza.setBusy(true);
             tableComprobante.setBusy(true);
-            odataModel.getListPieza()
+            tableTraspaso.setBusy(true);
+            tableOrder.setBusy(true);
+
+            odataModel.getListProration(desde, hasta)
                 .then(oData => {
                     tablePieza.setBusy(false)
-                    this.prorateModel.setProperty('/ProrateSet', oData.results);
-                    tablePieza.getBinding("items").getModel().setProperty("/ProrateSet", oData.results);
+                    tableComprobante.setBusy(false);
+                    tableTraspaso.setBusy(false);
+                    tableOrder.setBusy(false);
 
+                    let dato = oData.results[0];
+
+                    if (dato !== undefined) {
+                        this.prorationModel.setProperty('/ProrationSet', oData.results);
+                        this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);
+                        let tablaExpense = this.TotalizeExpense(dato);
+                        this.prorationModel.setProperty('/ExpenseSet', tablaExpense);
+                        tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", tablaExpense);
+
+                        let tabla = this.TotalizePieza(dato);
+                        tablePieza.getBinding("items").getModel().setProperty("/PartsSet", tabla);
+
+                        let tablaCentro = this.TotalizeCentro(dato);
+                        this.prorationModel.setProperty('/TraspasoSet', tablaCentro);
+                        tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", tablaCentro);                        
+
+                        this.onLoadExpediente();
+                        this.onLoadOrden();
+
+                    }                    
                 })
                 .catch(error => {
                     tablePieza.setBusy(false);
-                    console.error(error);
-                });
-
-
-            odataModel.getListGasto()
-                .then(oData => {
-                    tableComprobante.setBusy(false)
-                    this.prorateModel.setProperty('/ExpenseSet', oData.results);
-                    tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", oData.results);
-
-                })
-                .catch(error => {
                     tableComprobante.setBusy(false);
+                    tableTraspaso.setBusy(false);
+                    tableOrder.setBusy(false);
                     console.error(error);
                 });
-        },
+
+        },        
 
         onLoadExpediente: function () {
             const comboExpediente = this.getView().byId('Expediente');
-
 
             if (comboExpediente !== undefined) {
                 comboExpediente.setBusy(true);
@@ -474,6 +504,7 @@ sap.ui.define([
             curr.Pieza = '';
             curr.PiezaDesc = '';
             curr.Modelo = '';
+            curr.Ctel = '';
             curr.Precio = Number.parseFloat(Suma).toFixed(2);
             curr.Cant = Number.parseInt(Cant);
             results.push(curr);
@@ -563,6 +594,7 @@ sap.ui.define([
             const tablePieza = this.byId("PiezaView--tablePieza");
             const tableComprobante = this.byId("ComprobanteView--tableComprobante");
             const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
+            const tableOrder = this.byId("OrdenView--tableOrder"); 
 
             this.prorationModel.setProperty('/ProrationSet', []);
             this.prorationModel.setProperty('/PartsSet', []);
@@ -570,42 +602,42 @@ sap.ui.define([
             this.prorationModel.setProperty('/ExpenseSet', []);
             tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", []);
             this.prorationModel.setProperty('/TraspasoSet', []);
-            tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", []);
+            tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", []);            
+            this.prorationModel.setProperty('/OrdenSet', []);
+            tableOrder.getBinding("items").getModel().setProperty("/OrdenSet", []);
 
-            if (this.prorationModel.getProperty('/ExpedienteId') === 'Nuevo') {
-                //this.prorationModel.setProperty('/ProrateText','Prorratear'); 
-                this.prorationModel.setProperty('/VisibleDate', true);
+            if (this.prorationModel.getProperty('/ExpedienteId') === 'Nuevo') {                
+                this.prorationModel.setProperty('/VisibleExpediente', false);
                 this.prorationModel.setProperty('/VisibleProrate', true);
+                this.prorationModel.setProperty('/orderTextStatus', 'Ordenes Pendientes');
             }
-            else {
-                //this.prorationModel.setProperty('/ProrateText','Mostrar');
-                this.prorationModel.setProperty('/VisibleDate', false);
+            else {                
+                this.prorationModel.setProperty('/VisibleExpediente', true);
                 this.prorationModel.setProperty('/VisibleProrate', false);
+                this.prorationModel.setProperty('/orderTextStatus', 'Ordenes en Expediente');
             }
 
         },
 
-        onLoadOrden: function () {
+        onLoadOrden: function (expediente='') {
             const desde = this.parametersModel.getProperty('/Desde');
             const hasta = this.parametersModel.getProperty('/Hasta');
-            const tableOrder = this.byId("OrdenView--tableOrder");
-            let expediente = '';
+            const tableOrder = this.byId("OrdenView--tableOrder");            
 
-            var dateFormat = sap.ui.core.format.DateFormat.getInstance({ UTC: true , pattern:"yyyyMMdd" });            
-            var ini = dateFormat.format( desde );
-            var fin = dateFormat.format( hasta );
+            var dateFormat = sap.ui.core.format.DateFormat.getInstance({ UTC: true, pattern: "yyyyMMdd" });
+            var ini = dateFormat.format(desde);
+            var fin = dateFormat.format(hasta);
+
+            tableOrder.setBusy(true);   
             
-
-            if (this.prorationModel.getProperty('/ExpedienteId') !== 'Nuevo') {
-                expediente = this.prorationModel.getProperty('/ExpedienteId');
-            }
-
             odataModel.getListOrders(expediente, ini, fin)
                 .then(oData => {
+                    tableOrder.setBusy(false);   
                     this.prorationModel.setProperty('/OrdenSet', oData.results);
                     tableOrder.getBinding("items").getModel().setProperty("/OrdenSet", oData.results);
                 })
                 .catch(error => {
+                    tableOrder.setBusy(false);   
                     console.error(error);
                 });
         },

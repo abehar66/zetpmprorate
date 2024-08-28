@@ -34,7 +34,7 @@
                     <OverflowToolbar>
                         <Title
                             id="tableHeader"
-                            text="Ordenes Pendientes de Prorateo"
+                            text="Listado de Ordenes"
                             level="H3"/>
                         <ToolbarSpacer />
                         <SearchField
