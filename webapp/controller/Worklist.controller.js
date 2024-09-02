@@ -270,9 +270,10 @@ sap.ui.define([
                         tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", tablaCentro);
 
                         if (keyExpedienteCombo === 'Nuevo') {
-                            this.onLoadExpediente();
-                            this.onLoadOrden();
+                            this.onLoadExpediente();                            
                         }
+
+                        this.onLoadOrden();
 
                     }
                     else {
@@ -590,11 +591,16 @@ sap.ui.define([
             const tableOrder = this.byId("OrdenView--tableOrder");
             let expediente = '';
 
+            var dateFormat = sap.ui.core.format.DateFormat.getInstance({ UTC: true , pattern:"yyyyMMdd" });            
+            var ini = dateFormat.format( desde );
+            var fin = dateFormat.format( hasta );
+            
+
             if (this.prorationModel.getProperty('/ExpedienteId') !== 'Nuevo') {
                 expediente = this.prorationModel.getProperty('/ExpedienteId');
             }
 
-            odataModel.getListOrders(expediente, desde, hasta)
+            odataModel.getListOrders(expediente, ini, fin)
                 .then(oData => {
                     this.prorationModel.setProperty('/OrdenSet', oData.results);
                     tableOrder.getBinding("items").getModel().setProperty("/OrdenSet", oData.results);
