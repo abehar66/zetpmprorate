@@ -17,7 +17,9 @@
         </semantic:titleHeading>
 
          <semantic:titleCustomTextActions> 
-            <Button id="_IDGenProrate" icon="sap-icon://kpi-corporate-performance" tooltip="Prorratear" text="{ProrationModel>/ProrateText}" press="onProrate" />
+            <Button id="_IDGenProrate" icon="sap-icon://kpi-corporate-performance" tooltip="Prorratear" 
+                                       text="Prorratear" press="onProrate" visible="{ProrationModel>/VisibleProrate}" /> 
+            <Button id="_IDGenMostrar" icon="sap-icon://display" tooltip="Mostrar" text="Mostrar" press="onDisplay" />
             <Button id="_IDGenPrint"  icon="sap-icon://print" text="Imprimir" tooltip="Imprimir" press="onPrint"/>
         </semantic:titleCustomTextActions>     
 

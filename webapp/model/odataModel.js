@@ -188,14 +188,29 @@ sap.ui.define([
                 }.bind(this))
             },
 
-            getListOrders : function (idtaller=1) {
+            getListOrders : function (expediente,desde,hasta,idtaller=1) {
 
                 let Filters = [
                     new Filter({
                         path: 'Taller',
                         operator: FilterOperator.EQ,
                         value1: idtaller
-                    })                    
+                    }),
+                    new Filter({
+                        path: 'Expediente',
+                        operator: FilterOperator.EQ,
+                        value1: expediente
+                    }),
+                    new Filter({
+                        path: 'Ini',
+                        operator: FilterOperator.EQ,
+                        value1: desde
+                    }),
+                    new Filter({
+                        path: 'Fin',
+                        operator: FilterOperator.EQ,
+                        value1: hasta
+                    })                                      
                 ];
 
                 

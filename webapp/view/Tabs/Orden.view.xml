@@ -15,7 +15,7 @@
 		layout="ResponsiveGridLayout">		
 		<f:content>	
         <Table
-                id="tableComprobante"
+                id="tableOrder"
                 width="auto"
                 items="{
                     path: 'ProrationModel>/OrdenSet',
@@ -28,7 +28,7 @@
                 busyIndicatorDelay="{worklistView>/tableBusyDelay}"
                 growing="true"
                 growingScrollToLoad="true"
-                updateFinished=".onLoadOrden">
+                updateFinished="">
 
                 <headerToolbar>
                     <OverflowToolbar>

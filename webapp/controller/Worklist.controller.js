@@ -6,8 +6,8 @@ sap.ui.define([
     "sap/ui/model/FilterOperator",
     "../model/odataModel",
     "sap/m/PDFViewer",
-], function (BaseController, JSONModel, formatter, Filter, FilterOperator,odataModel,PDFViewer) { 
-    "use strict"; 
+], function (BaseController, JSONModel, formatter, Filter, FilterOperator, odataModel, PDFViewer) {
+    "use strict";
 
     return BaseController.extend("zetpmprorate.controller.Worklist", {
 
@@ -21,7 +21,7 @@ sap.ui.define([
          * Called when the worklist controller is instantiated.
          * @public
          */
-        onInit : function () {
+        onInit: function () {
             var oViewModel;
 
             // keeps the search state
@@ -29,88 +29,89 @@ sap.ui.define([
 
             // Model used to manipulate control states
             oViewModel = new JSONModel({
-                worklistTableTitle : this.getResourceBundle().getText("worklistTableTitle"),
+                worklistTableTitle: this.getResourceBundle().getText("worklistTableTitle"),
                 shareSendEmailSubject: this.getResourceBundle().getText("shareSendEmailWorklistSubject"),
                 shareSendEmailMessage: this.getResourceBundle().getText("shareSendEmailWorklistMessage", [location.href]),
-                tableNoDataText : this.getResourceBundle().getText("tableNoDataText")
+                tableNoDataText: this.getResourceBundle().getText("tableNoDataText")
             });
             this.setModel(oViewModel, "worklistView");
 
             odataModel.init(this);
 
             this.prorateModel = new JSONModel(
-                {                    
-                    'ProrateSet': [],                    
+                {
+                    'ProrateSet': [],
                 });
 
             this.expenseModel = new JSONModel(
-                {                    
-                    'ExpenseSet': [],                    
-                });    
+                {
+                    'ExpenseSet': [],
+                });
 
             this.prorationModel = new JSONModel(
-                {                    
-                   'ProrationSet': [],
-                   'PartsSet': [], 
-                   'ExpenseSet': [],
-                   'TraspasoSet' : [], 
-                   'ExpedienteSet' : [],
-                   'ExpedienteId' : 'Nuevo',
-                   'ProrateText' : 'Prorratear',
-                   'OrdenSet' : [],
-                   'VisibleDate' : true
-                });    
-            
-            this.parametersModel = new JSONModel(
-                {                    
-                  'Desde': new Date(),
-                  'Hasta': new Date(),                    
+                {
+                    'ProrationSet': [],
+                    'PartsSet': [],
+                    'ExpenseSet': [],
+                    'TraspasoSet': [],
+                    'ExpedienteSet': [],
+                    'ExpedienteId': 'Nuevo',
+                    'ProrateText': 'Prorratear',
+                    'OrdenSet': [],
+                    'VisibleDate': true,
+                    'VisibleProrate': true,
                 });
-       
-            
-            this.setModel(this.prorateModel, "ProrateModel");    
-            this.setModel(this.expenseModel, "ExpenseModel");   
+
+            this.parametersModel = new JSONModel(
+                {
+                    'Desde': new Date(),
+                    'Hasta': new Date(),
+                });
+
+
+            this.setModel(this.prorateModel, "ProrateModel");
+            this.setModel(this.expenseModel, "ExpenseModel");
             this.setModel(this.prorationModel, "ProrationModel");
             this.setModel(this.parametersModel, "ParametersModel");
 
-            this.onLoadExpediente( );
-           
+            this.onLoadExpediente();
+
 
         },
 
-        onPrint: function() {
-            const oProrationList = this.prorationModel.getProperty('/ProrationSet');             
-            const selectedTab =this.getView().byId("iconTabBar").getSelectedKey();
+        onPrint: function () {
+            const oProrationList = this.prorationModel.getProperty('/ProrationSet');
+            const selectedTab = this.getView().byId("iconTabBar").getSelectedKey();
             let expediente = '';
             let id = '';
             let titlePDF = '';
-            
-            if ( (oProrationList !== undefined) &&
-                 (oProrationList.length !== 0) )  {
-            expediente = oProrationList[0].ExpedienteId;
 
-            if (selectedTab === 'pieza'){
-                id = 'PRORATE';
-                titlePDF = this.getView().getModel("i18n").getProperty("reportPartsTitle");
-            }
+            if ((oProrationList !== undefined) &&
+                (oProrationList.length !== 0)) {
+                expediente = oProrationList[0].ExpedienteId;
 
-            if (selectedTab === 'traspaso'){
-                id = 'TRANSFER';
-                titlePDF = this.getView().getModel("i18n").getProperty("reportTransferPartsTitle");
-            }    
+                if (selectedTab === 'pieza') {
+                    id = 'PRORATE';
+                    titlePDF = this.getView().getModel("i18n").getProperty("reportPartsTitle");
+                }
 
-            if (selectedTab === 'comprobante'){
-                id = 'EXPENSE';
-                titlePDF = this.getView().getModel("i18n").getProperty("reportExpenseTitle");
-            }
+                if (selectedTab === 'traspaso') {
+                    id = 'TRANSFER';
+                    titlePDF = this.getView().getModel("i18n").getProperty("reportTransferPartsTitle");
+                }
+
+                if (selectedTab === 'comprobante') {
+                    id = 'EXPENSE';
+                    titlePDF = this.getView().getModel("i18n").getProperty("reportExpenseTitle");
+                }
 
 
-            let path = `/sap/opu/odata/sap/ZPM_WEB_FIORI_SRV/FileSet(Id='${id}',RefValue='${expediente}')/$value`;            
-            
-            this.pdfViewer = new PDFViewer();
-            this.pdfViewer.setSource(path);
-            this.pdfViewer.setTitle(titlePDF);            
-            this.pdfViewer.open();
+                let path = `/sap/opu/odata/sap/ZPM_WEB_FIORI_SRV/FileSet(Id='${id}',RefValue='${expediente}')/$value`;
+
+                this.pdfViewer = new PDFViewer();
+                this.pdfViewer.setSource(path);
+                this.pdfViewer.setTitle(titlePDF);
+                this.pdfViewer.open();
             }
         },
 
@@ -127,7 +128,7 @@ sap.ui.define([
          * @param {sap.ui.base.Event} oEvent the update finished event
          * @public
          */
-        onUpdateFinished : function (oEvent) {
+        onUpdateFinished: function (oEvent) {
             // update the worklist's object counter after the table update
             var sTitle,
                 oTable = oEvent.getSource(),
@@ -139,11 +140,11 @@ sap.ui.define([
             } else {
                 sTitle = this.getResourceBundle().getText("worklistTableTitle");
             }
-            
+
             this.getModel("worklistView").setProperty("/worklistTableTitle", sTitle);
         },
 
-        onUpdateFinished2 : function (oEvent) {
+        onUpdateFinished2: function (oEvent) {
             // update the worklist's object counter after the table update
             var sTitle,
                 oTable2 = oEvent.getSource(),
@@ -155,7 +156,7 @@ sap.ui.define([
             } else {
                 sTitle = this.getResourceBundle().getText("worklistTableTitle2");
             }
-            
+
             this.getModel("worklistView").setProperty("/worklistTableTitle2", sTitle);
         },
 
@@ -164,7 +165,7 @@ sap.ui.define([
          * @param {sap.ui.base.Event} oEvent the table selectionChange event
          * @public
          */
-        onPress : function (oEvent) {
+        onPress: function (oEvent) {
             // The source is the list item that got pressed
             this._showObject(oEvent.getSource());
         },
@@ -174,13 +175,13 @@ sap.ui.define([
          * Navigate back in the browser history
          * @public
          */
-        onNavBack : function() {
+        onNavBack: function () {
             // eslint-disable-next-line fiori-custom/sap-no-history-manipulation, fiori-custom/sap-browser-api-warning
             history.go(-1);
         },
 
 
-        onSearch : function (oEvent) {
+        onSearch: function (oEvent) {
             if (oEvent.getParameters().refreshButtonPressed) {
                 // Search field's 'refresh' button has been pressed.
                 // This is visible if you select any main list item.
@@ -204,122 +205,152 @@ sap.ui.define([
          * and group settings and refreshes the list binding.
          * @public
          */
-        onRefresh : function () {
+        onRefresh: function () {
             var oTable = this.byId("table");
             oTable.getBinding("items").refresh();
         },
 
-        onProrate : function () {
+        onDisplay: function () {
             const tablePieza = this.byId("PiezaView--tablePieza");
             const tableComprobante = this.byId("ComprobanteView--tableComprobante");
             const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
-            const desde = this.parametersModel.getProperty('/Desde');  
-            const hasta = this.parametersModel.getProperty('/Hasta'); 
-            let keyExpedienteCombo = this.getView().byId('Expediente').getSelectedKey(); 
+            const desde = this.parametersModel.getProperty('/Desde');
+            const hasta = this.parametersModel.getProperty('/Hasta');
+            let keyExpedienteCombo = this.getView().byId('Expediente').getSelectedKey();
+            
 
-            if (keyExpedienteCombo === ''){
+            if (keyExpedienteCombo !== 'Nuevo') {
+                this.onProrate();                
+            }    
+            else {
+               this.onLoadOrden();
+               this.prorationModel.setProperty('/ProrationSet', []);
+               this.prorationModel.setProperty('/PartsSet', []);
+               tablePieza.getBinding("items").getModel().setProperty("/PartsSet", []);
+               this.prorationModel.setProperty('/ExpenseSet', []);
+               tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", []);
+               this.prorationModel.setProperty('/TraspasoSet', []);
+               tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", []);   
+            }    
+            
+        },
+
+        onProrate: function () {
+            const tablePieza = this.byId("PiezaView--tablePieza");
+            const tableComprobante = this.byId("ComprobanteView--tableComprobante");
+            const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
+            const desde = this.parametersModel.getProperty('/Desde');
+            const hasta = this.parametersModel.getProperty('/Hasta');
+            let keyExpedienteCombo = this.getView().byId('Expediente').getSelectedKey();
+
+            if (keyExpedienteCombo === '') {
                 keyExpedienteCombo = 'Nuevo';
             }
 
-            tablePieza.setBusy(true);            
+            tablePieza.setBusy(true);
             tableComprobante.setBusy(true);
-            odataModel.getListProration(desde,hasta,keyExpedienteCombo)
-            .then(oData=>{
-                tablePieza.setBusy(false)
-                tableComprobante.setBusy(false);                
-                let dato = oData.results[0];
+            odataModel.getListProration(desde, hasta, keyExpedienteCombo)
+                .then(oData => {
+                    tablePieza.setBusy(false)
+                    tableComprobante.setBusy(false);
+                    let dato = oData.results[0];
 
-                if (dato !== undefined){
-                   this.prorationModel.setProperty('/ProrationSet', oData.results);
-                   this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);
-                   let tabla = this.TotalizePieza(dato);                   
-                   tablePieza.getBinding("items").getModel().setProperty("/PartsSet",tabla);   
-                   let tablaExpense = this.TotalizeExpense(dato);
-                   this.prorationModel.setProperty('/ExpenseSet', tablaExpense);    
-                   tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",tablaExpense);   
-                   let tablaCentro = this.TotalizeCentro(dato);                   
-                   this.prorationModel.setProperty('/TraspasoSet', tablaCentro);
-                   tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet",tablaCentro);  
-                   
-                   if (keyExpedienteCombo === 'Nuevo'){
-                    this.onLoadExpediente( );
-                    this.onLoadOrden( );
+                    if (dato !== undefined) {
+                        this.prorationModel.setProperty('/ProrationSet', oData.results);
+                        this.prorationModel.setProperty('/PartsSet', dato.ToParts.results);
+                        let tablaExpense = this.TotalizeExpense(dato);
+                        this.prorationModel.setProperty('/ExpenseSet', tablaExpense);
+                        tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", tablaExpense);
+
+                        let tabla = this.TotalizePieza(dato);
+                        tablePieza.getBinding("items").getModel().setProperty("/PartsSet", tabla);
+
+                        let tablaCentro = this.TotalizeCentro(dato);
+                        this.prorationModel.setProperty('/TraspasoSet', tablaCentro);
+                        tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", tablaCentro);
+
+                        if (keyExpedienteCombo === 'Nuevo') {
+                            this.onLoadExpediente();
+                            this.onLoadOrden();
+                        }
+
                     }
+                    else {
+                        this.prorationModel.setProperty('/ProrationSet', []);
+                        this.prorationModel.setProperty('/PartsSet', []);
+                        tablePieza.getBinding("items").getModel().setProperty("/PartsSet", []);
+                        this.prorationModel.setProperty('/ExpenseSet', []);
+                        tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", []);
+                        this.prorationModel.setProperty('/TraspasoSet', []);
+                        tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", []);
+                    }
+                })
+                .catch(error => {
+                    tablePieza.setBusy(false);
+                    tableComprobante.setBusy(false);
+                    console.error(error);
+                });
 
-                }              
-               else {
-                   this.prorationModel.setProperty('/ProrationSet', []);
-                   this.prorationModel.setProperty('/PartsSet', []);                                     
-                   tablePieza.getBinding("items").getModel().setProperty("/PartsSet",[]);                      
-                   this.prorationModel.setProperty('/ExpenseSet', []);    
-                   tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",[]);                      
-                   this.prorationModel.setProperty('/TraspasoSet', []);
-                   tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet",[]);  
-               } 
-            })
-            .catch(error=>{
-                tablePieza.setBusy(false);
-                tableComprobante.setBusy(false);
-                console.error(error);
-            });            
-            
-        },  
+        },
 
-        onProrate1 : function () {
+        onProrate1: function () {
             const tablePieza = this.byId("PiezaView--tablePieza");
             const tableComprobante = this.byId("ComprobanteView--tableComprobante");
 
-            tablePieza.setBusy(true);            
+            tablePieza.setBusy(true);
             tableComprobante.setBusy(true);
             odataModel.getListPieza()
-            .then(oData=>{
-                tablePieza.setBusy(false)
-                this.prorateModel.setProperty('/ProrateSet', oData.results);                    
-                tablePieza.getBinding("items").getModel().setProperty("/ProrateSet",oData.results);   
-                         
-            })
-            .catch(error=>{
-                tablePieza.setBusy(false);
-                console.error(error);
-            });
+                .then(oData => {
+                    tablePieza.setBusy(false)
+                    this.prorateModel.setProperty('/ProrateSet', oData.results);
+                    tablePieza.getBinding("items").getModel().setProperty("/ProrateSet", oData.results);
 
-            
+                })
+                .catch(error => {
+                    tablePieza.setBusy(false);
+                    console.error(error);
+                });
+
+
             odataModel.getListGasto()
-            .then(oData=>{
-                tableComprobante.setBusy(false)
-                this.prorateModel.setProperty('/ExpenseSet', oData.results);    
-                tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",oData.results);   
-                         
-            })
-            .catch(error=>{
-                tableComprobante.setBusy(false);
-                console.error(error);
-            });
-        },  
+                .then(oData => {
+                    tableComprobante.setBusy(false)
+                    this.prorateModel.setProperty('/ExpenseSet', oData.results);
+                    tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", oData.results);
 
-        onLoadExpediente : function () {
+                })
+                .catch(error => {
+                    tableComprobante.setBusy(false);
+                    console.error(error);
+                });
+        },
+
+        onLoadExpediente: function () {
             const comboExpediente = this.getView().byId('Expediente');
 
-             if (comboExpediente !== undefined) {   
-                comboExpediente.setBusy(true);
-            }   
-            
-            odataModel.getListMaestros('EXPEDIENTE')
-            .then(oData=>{                
-                oData.results.unshift({Key:"Nuevo",Value:"Nuevo"});
-                this.prorationModel.setProperty('/ExpedienteSet', oData.results); 
-                this.prorationModel.setProperty('/ExpedienteId','Nuevo'); 
-                                                            
-            })
-            .catch(error=>{                
-                console.error(error);
-            });
 
-            if (comboExpediente !== undefined) {   
+            if (comboExpediente !== undefined) {
+                comboExpediente.setBusy(true);
+            }
+
+            odataModel.getListMaestros('EXPEDIENTE')
+                .then(oData => {
+                    //oData.results.unshift({Key:"Nuevo",Value:"Nuevo"});
+                    let arr = oData.results;
+                    arr.unshift({ Key: "Nuevo", Value: "Nuevo" });
+                    this.prorationModel.setProperty('/ExpedienteSet', arr);
+                    this.prorationModel.setProperty('/ExpedienteId', 'Nuevo');
+
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            if (comboExpediente !== undefined) {
                 comboExpediente.setBusy(false);
             }
 
-        },      
+        },
 
         /* =========================================================== */
         /* internal methods                                            */
@@ -330,7 +361,7 @@ sap.ui.define([
          * @param {sap.m.ObjectListItem} oItem selected Item
          * @private
          */
-        _showObject : function (oItem) {
+        _showObject: function (oItem) {
             this.getRouter().navTo("object", {
                 objectId: oItem.getBindingContext().getPath().substring("/PartsProrationSet".length)
             });
@@ -341,129 +372,129 @@ sap.ui.define([
          * @param {sap.ui.model.Filter[]} aTableSearchState An array of filters for the search
          * @private
          */
-        _applySearch: function(aTableSearchState) {
+        _applySearch: function (aTableSearchState) {
             var oTable = this.byId("tablePieza"),
                 oViewModel = this.getModel("worklistView"),
                 oTable2 = this.byId("tableComprobante");
-                if(oTable){
-                    oTable.getBinding("items").filter(aTableSearchState, "Application");
-                }else if(oTable2){
-                    oTable2.getBinding("items").filter(aTableSearchState, "Application");
-                }
+            if (oTable) {
+                oTable.getBinding("items").filter(aTableSearchState, "Application");
+            } else if (oTable2) {
+                oTable2.getBinding("items").filter(aTableSearchState, "Application");
+            }
             // changes the noDataText of the list in case there are no filter results
             if (aTableSearchState.length !== 0) {
                 oViewModel.setProperty("/tableNoDataText", this.getResourceBundle().getText("worklistNoDataWithSearchText"));
             }
         },
 
-        TotalizePieza: function( expediente ) {                      
-           const precio_uni = Number.parseFloat(expediente.Precio);
-           let results = [];
-           
-           let Pieza = '';
-           let curr = { };
-           let Suma = 0;
-           let Cant = 0;
-           let Total_Precio = 0;
-           let Total_Cant = 0;
-          
-
-           expediente.ToParts.results.forEach(e => { 
-
-            if ((e.Pieza !== Pieza) && (Suma !== 0))
-             {
-                curr = Object.assign({} , curr);
-                curr.Centro = '';
-                curr.Precio = Number.parseFloat(Suma).toFixed(2);
-                curr.Cant = Number.parseInt(Cant);
-                Suma = 0;
-                Cant = 0;                
-                results.push(curr);
-              }            
-                        
-            Suma = Suma + Number.parseFloat(e.Precio); 
-            Cant = Cant + Number.parseInt(e.Cant);        
-            Total_Precio = Total_Precio + Number.parseFloat(e.Precio); 
-            Total_Cant = Total_Cant + Number.parseInt(e.Cant);
-
-            Pieza = e.Pieza;            
-            curr = e;            
-            e.Cant = Number.parseInt(e.Cant);
-            e.Precio = '';
-            //results.push(e);     
-
-           });
-
-           curr = Object.assign({} , curr);
-           curr.Centro = '';
-           curr.Precio = Number.parseFloat(Suma).toFixed(2);
-           curr.Cant = Number.parseInt(Cant);
-           results.push(curr);
-
-           curr = Object.assign({} , curr);
-           curr.Centro = '';
-           curr.Pieza = 'Total';
-           curr.PiezaDesc = '';
-           curr.Modelo = '';
-           curr.Precio = Number.parseFloat(Total_Precio).toFixed(2);
-           curr.Cant = Number.parseInt(Total_Cant);
-           results.push(curr);
-
-           
-           return results;
-
-        },  
-
-        TotalizeCentro: function( expediente ) {                       
+        TotalizePieza: function (expediente) {
             const precio_uni = Number.parseFloat(expediente.Precio);
-            let results = [];            
+            let results = [];
+
             let Pieza = '';
-            let curr = { };
+            let curr = {};
+            let Suma = 0;
+            let Cant = 0;
+            let Total_Precio = 0;
+            let Total_Cant = 0;
+
+
+            expediente.ToParts.results.forEach(e => {
+
+                if ((e.Pieza !== Pieza) && (Suma !== 0)) {
+                    curr = Object.assign({}, curr);
+                    curr.Centro = '';
+                    curr.Precio = Number.parseFloat(Suma).toFixed(2);
+                    curr.Cant = Number.parseInt(Cant);
+                    Suma = 0;
+                    Cant = 0;
+                    results.push(curr);
+                }
+
+                Suma = Suma + Number.parseFloat(e.Precio);
+                Cant = Cant + Number.parseInt(e.Cant);
+                Total_Precio = Total_Precio + Number.parseFloat(e.Precio);
+                Total_Cant = Total_Cant + Number.parseInt(e.Cant);
+
+                Pieza = e.Pieza;
+                curr = e;
+                e.Cant = Number.parseInt(e.Cant);
+                e.Precio = '';
+                //results.push(e);     
+
+            });
+
+            curr = Object.assign({}, curr);
+            curr.Centro = '';
+            curr.Precio = Number.parseFloat(Suma).toFixed(2);
+            curr.Cant = Number.parseInt(Cant);
+            results.push(curr);
+
+            curr = Object.assign({}, curr);
+            curr.Centro = '';
+            curr.Pieza = 'Total';
+            curr.PiezaDesc = '';
+            curr.Modelo = '';
+            //curr.Precio = Number.parseFloat(Total_Precio).toFixed(2);
+            curr.Precio = this._totalGasto;
+            curr.Cant = Number.parseInt(Total_Cant);
+            results.push(curr);
+
+
+            return results;
+
+        },
+
+        TotalizeCentro: function (expediente) {
+            const precio_uni = Number.parseFloat(expediente.Precio);
+            let results = [];
+            let Pieza = '';
+            let curr = {};
             let Suma = 0;
             let Cant = 0;
             let Total_Precio = 0;
             let Total_Cant = 0;
 
             expediente.ToParts.results.sort((a, b) => a.Centro.localeCompare(b.Centro));
-           
- 
-            expediente.ToParts.results.forEach(e => { 
-                                      
-             Suma = Suma + Number.parseFloat(e.Precio); 
-             Cant = Cant + Number.parseInt(e.Cant);                      
-             
-             results.push(e);     
-             curr = e;
- 
-            }); 
-             
-            curr = Object.assign({} , curr);
-            curr.Centro = 'Total';       
-            curr.Pieza = '';     
+
+
+            expediente.ToParts.results.forEach(e => {
+
+                Suma = Suma + Number.parseFloat(e.Precio);
+                Cant = Cant + Number.parseInt(e.Cant);
+
+                results.push(e);
+                curr = e;
+
+            });
+
+            curr = Object.assign({}, curr);
+            curr.Centro = 'Total';
+            curr.Pieza = '';
             curr.PiezaDesc = '';
             curr.Modelo = '';
             curr.Precio = Number.parseFloat(Suma).toFixed(2);
             curr.Cant = Number.parseInt(Cant);
             results.push(curr);
- 
-            
-            return results;
- 
-         },  
 
-         TotalizeExpense: function( expediente ) {                       
+
+            return results;
+
+        },
+
+        TotalizeExpense: function (expediente) {
             const precio_uni = Number.parseFloat(expediente.Precio);
             let results = [];
-            
+
             let Cuenta = '';
             let Mblnr = '';
             let Orden = '';
-            let curr = { };
-            let Suma = 0;            
+            let curr = {};
+            let Suma = 0;
             let Total_Gasto = 0;
-           
+
             //expediente.ToExpense.results.sort((a, b) => a.Cuenta.localeCompare(b.Cuenta));            
-            expediente.ToExpense.results.sort(function(a, b) { 
+            expediente.ToExpense.results.sort(function (a, b) {
                 if (a.Orden.localeCompare(b.Orden) > 0) return 1;
                 if (a.Orden.localeCompare(b.Orden) < 0) return -1;
                 if (a.Mblnr.localeCompare(b.Mblnr) > 0) return 1;
@@ -473,90 +504,104 @@ sap.ui.define([
                 return 0;
             });
 
-            expediente.ToExpense.results.forEach(e => { 
- 
-             if ((( e.Orden !== Orden || 
+            expediente.ToExpense.results.forEach(e => {
+
+                if (((e.Orden !== Orden ||
                     e.Mblnr !== Mblnr ||
-                    e.Cuenta !== Cuenta )) && (Suma !== 0))
-              {
-                 curr = Object.assign({} , curr);
-                 //curr.Orden = '';
-                 curr.Gasto = Number.parseFloat(Suma).toFixed(2);                 
-                 Suma = 0;                 
-                 results.push(curr);
-               }            
-                         
-             Suma = Suma + Number.parseFloat(e.Gasto);                     
-             Total_Gasto = Total_Gasto + Number.parseFloat(e.Gasto);              
- 
-             Cuenta = e.Cuenta;            
-             Orden = e.Orden;
-             Mblnr = e.Mblnr;
-             curr = e;                         
-             //curr.Orden = '';             
-             //results.push(e);     
- 
+                    e.Cuenta !== Cuenta)) && (Suma !== 0)) {
+                    curr = Object.assign({}, curr);
+                    //curr.Orden = '';
+                    curr.Gasto = Number.parseFloat(Suma).toFixed(2);
+                    Suma = 0;
+                    results.push(curr);
+                }
+
+                Suma = Suma + Number.parseFloat(e.Gasto);
+                Total_Gasto = Total_Gasto + Number.parseFloat(e.Gasto);
+
+                Cuenta = e.Cuenta;
+                Orden = e.Orden;
+                Mblnr = e.Mblnr;
+                curr = e;
+                //curr.Orden = '';             
+                //results.push(e);     
+
             });
- 
-            curr = Object.assign({} , curr);
+
+            curr = Object.assign({}, curr);
             //curr.Orden = '';
-            curr.Gasto = Number.parseFloat(Suma).toFixed(2);            
+            curr.Gasto = Number.parseFloat(Suma).toFixed(2);
             results.push(curr);
- 
-            curr = Object.assign({} , curr);            
-            curr.Cuenta = 'Total';                        
+
+            curr = Object.assign({}, curr);
+            curr.Cuenta = 'Total';
             curr.Orden = '';
             curr.Mblnr = '';
-            curr.Gasto = Number.parseFloat(Total_Gasto).toFixed(2);            
+            curr.Gasto = Number.parseFloat(Total_Gasto).toFixed(2);
             results.push(curr);
-             
+
+
+            this._totalGasto = curr.Gasto;
+
             return results;
- 
-         }, 
 
-        ToDecimal: function(valor) { 
-          const str = String(valor);
-          const arr = str.split(".");
-          const ent = parseInt(arr[0]);
-          const dec = parseInt(arr[1]);
-
-          const numero = dec * 0.01 + ent;          
-          
-          return numero;
         },
 
-        onChangeExpediente: function() {
+        ToDecimal: function (valor) {
+            const str = String(valor);
+            const arr = str.split(".");
+            const ent = parseInt(arr[0]);
+            const dec = parseInt(arr[1]);
+
+            const numero = dec * 0.01 + ent;
+
+            return numero;
+        },
+
+        onChangeExpediente: function () {
             const tablePieza = this.byId("PiezaView--tablePieza");
             const tableComprobante = this.byId("ComprobanteView--tableComprobante");
             const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
 
             this.prorationModel.setProperty('/ProrationSet', []);
-            this.prorationModel.setProperty('/PartsSet', []);                                     
-            tablePieza.getBinding("items").getModel().setProperty("/PartsSet",[]);                      
-            this.prorationModel.setProperty('/ExpenseSet', []);    
-            tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet",[]);                      
+            this.prorationModel.setProperty('/PartsSet', []);
+            tablePieza.getBinding("items").getModel().setProperty("/PartsSet", []);
+            this.prorationModel.setProperty('/ExpenseSet', []);
+            tableComprobante.getBinding("items").getModel().setProperty("/ExpenseSet", []);
             this.prorationModel.setProperty('/TraspasoSet', []);
-            tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet",[]);  
+            tableTraspaso.getBinding("items").getModel().setProperty("/TraspasoSet", []);
 
-            if (this.prorationModel.getProperty('/ExpedienteId') === 'Nuevo'){
-                this.prorationModel.setProperty('/ProrateText','Prorratear'); 
-                this.prorationModel.setProperty('/VisibleDate',true);
+            if (this.prorationModel.getProperty('/ExpedienteId') === 'Nuevo') {
+                //this.prorationModel.setProperty('/ProrateText','Prorratear'); 
+                this.prorationModel.setProperty('/VisibleDate', true);
+                this.prorationModel.setProperty('/VisibleProrate', true);
             }
             else {
-                this.prorationModel.setProperty('/ProrateText','Mostrar');
-                this.prorationModel.setProperty('/VisibleDate',false);
-            }   
+                //this.prorationModel.setProperty('/ProrateText','Mostrar');
+                this.prorationModel.setProperty('/VisibleDate', false);
+                this.prorationModel.setProperty('/VisibleProrate', false);
+            }
 
-        },    
+        },
 
-        onLoadOrden: function() { 
-            odataModel.getListOrders()
-            .then(oData=>{                                
-                this.prorationModel.setProperty('/OrdenSet', oData.results);                                                                             
-            })
-            .catch(error=>{                
-                console.error(error);
-            });
-        },    
+        onLoadOrden: function () {
+            const desde = this.parametersModel.getProperty('/Desde');
+            const hasta = this.parametersModel.getProperty('/Hasta');
+            const tableOrder = this.byId("OrdenView--tableOrder");
+            let expediente = '';
+
+            if (this.prorationModel.getProperty('/ExpedienteId') !== 'Nuevo') {
+                expediente = this.prorationModel.getProperty('/ExpedienteId');
+            }
+
+            odataModel.getListOrders(expediente, desde, hasta)
+                .then(oData => {
+                    this.prorationModel.setProperty('/OrdenSet', oData.results);
+                    tableOrder.getBinding("items").getModel().setProperty("/OrdenSet", oData.results);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
     });
 });
