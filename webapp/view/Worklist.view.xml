@@ -6,7 +6,7 @@
     xmlns:semantic="sap.f.semantic">
 
     <semantic:SemanticPage
-        id="page"
+        id="page1"
         headerPinnable="false"
         toggleHeaderOnTitleClick="false">
 
@@ -83,16 +83,16 @@
 				selectedKey="">				
                 <items>
                     <IconTabFilter id="PendienteTab" text="{ProrationModel>/orderTextStatus}" key="orderprorate">
-						<mvc:XMLView id="OrdenView" viewName="zetpmprorate.view.Tabs.Orden"></mvc:XMLView>
+						<mvc:XMLView id="OrdenView1" viewName="zetpmprorate.view.Tabs.Orden"></mvc:XMLView>
 					</IconTabFilter>	
 					<IconTabFilter id="PiezaTab" text='Gastos por Piezas' key="pieza">
-						<mvc:XMLView id="PiezaView" viewName="zetpmprorate.view.Tabs.Pieza"></mvc:XMLView>
+						<mvc:XMLView id="PiezaView1" viewName="zetpmprorate.view.Tabs.Pieza"></mvc:XMLView>
 					</IconTabFilter>										
                     <IconTabFilter id="TraspasoTab" text='Traspaso a Centros' key="traspaso">
-						<mvc:XMLView id="TraspasoView" viewName="zetpmprorate.view.Tabs.Traspaso"></mvc:XMLView>
+						<mvc:XMLView id="TraspasoView1" viewName="zetpmprorate.view.Tabs.Traspaso"></mvc:XMLView>
 					</IconTabFilter>	
                     <IconTabFilter id="ComprobanteTab" text='Gastos FI' key="comprobante">
-						<mvc:XMLView id="ComprobanteView" viewName="zetpmprorate.view.Tabs.Comprobante"></mvc:XMLView>
+						<mvc:XMLView id="ComprobanteView1" viewName="zetpmprorate.view.Tabs.Comprobante"></mvc:XMLView>
 					</IconTabFilter>	                     
                     </items>                
 			</IconTabBar>     

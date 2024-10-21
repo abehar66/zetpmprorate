@@ -213,10 +213,10 @@ sap.ui.define([
         },
 
         onDisplayOrden: function () {
-            const tablePieza = this.byId("PiezaView--tablePieza");
-            const tableComprobante = this.byId("ComprobanteView--tableComprobante");
-            const tableTraspaso = this.byId("TraspasoView--tableTraspaso");   
-            const tableOrder = this.byId("OrdenView--tableOrder");           
+            const tablePieza = this.byId("PiezaView1--tablePieza");
+            const tableComprobante = this.byId("ComprobanteView1--tableComprobante");
+            const tableTraspaso = this.byId("TraspasoView1--tableTraspaso");   
+            const tableOrder = this.byId("OrdenView1--tableOrder");           
             
             this.prorationModel.setProperty('/ProrationSet', []);
             this.prorationModel.setProperty('/PartsSet', []);
@@ -233,10 +233,10 @@ sap.ui.define([
         },
 
         onDisplayExpediente: function () {           
-            const tablePieza = this.byId("PiezaView--tablePieza");
-            const tableComprobante = this.byId("ComprobanteView--tableComprobante");
-            const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
-            const tableOrder = this.byId("OrdenView--tableOrder");  
+            const tablePieza = this.byId("PiezaView1--tablePieza");
+            const tableComprobante = this.byId("ComprobanteView1--tableComprobante");
+            const tableTraspaso = this.byId("TraspasoView1--tableTraspaso");
+            const tableOrder = this.byId("OrdenView1--tableOrder");  
 
             const desde = this.parametersModel.getProperty('/Desde');
             const hasta = this.parametersModel.getProperty('/Hasta');
@@ -296,10 +296,10 @@ sap.ui.define([
         },
 
         onProrate: function () {
-            const tablePieza = this.byId("PiezaView--tablePieza");
-            const tableComprobante = this.byId("ComprobanteView--tableComprobante");
-            const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
-            const tableOrder = this.byId("OrdenView--tableOrder");  
+            const tablePieza = this.byId("PiezaView1--tablePieza");
+            const tableComprobante = this.byId("ComprobanteView1--tableComprobante");
+            const tableTraspaso = this.byId("TraspasoView1--tableTraspaso");
+            const tableOrder = this.byId("OrdenView1--tableOrder");  
 
             const desde = this.parametersModel.getProperty('/Desde');
             const hasta = this.parametersModel.getProperty('/Hasta');     
@@ -591,10 +591,10 @@ sap.ui.define([
         },
 
         onChangeExpediente: function () {
-            const tablePieza = this.byId("PiezaView--tablePieza");
-            const tableComprobante = this.byId("ComprobanteView--tableComprobante");
-            const tableTraspaso = this.byId("TraspasoView--tableTraspaso");
-            const tableOrder = this.byId("OrdenView--tableOrder"); 
+            const tablePieza = this.byId("PiezaView1--tablePieza");
+            const tableComprobante = this.byId("ComprobanteView1--tableComprobante");
+            const tableTraspaso = this.byId("TraspasoView1--tableTraspaso");
+            const tableOrder = this.byId("OrdenView1--tableOrder"); 
 
             this.prorationModel.setProperty('/ProrationSet', []);
             this.prorationModel.setProperty('/PartsSet', []);
@@ -622,7 +622,7 @@ sap.ui.define([
         onLoadOrden: function (expediente='') {
             const desde = this.parametersModel.getProperty('/Desde');
             const hasta = this.parametersModel.getProperty('/Hasta');
-            const tableOrder = this.byId("OrdenView--tableOrder");            
+            const tableOrder = this.byId("OrdenView1--tableOrder");            
 
             var dateFormat = sap.ui.core.format.DateFormat.getInstance({ UTC: true, pattern: "yyyyMMdd" });
             var ini = dateFormat.format(desde);

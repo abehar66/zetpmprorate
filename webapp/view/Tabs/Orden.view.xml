@@ -33,12 +33,12 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <Title
-                            id="tableHeader"
+                            id="tableHeader1"
                             text="Listado de Ordenes"
                             level="H3"/>
                         <ToolbarSpacer />
                         <SearchField
-                            id="searchField"
+                            id="searchField1"
                             tooltip="{i18n>worklistSearchTooltip}"
                             search=".onSearch">
                             <layoutData>
@@ -66,11 +66,11 @@
                 </columns>
 
                 <items>
-                    <ColumnListItem id="_IDGenColumnListItem1" >                        
-                        <Text id="_IDGenText2" text="{ProrationModel>Aufnr}"/>                        
-                        <Text id="_IDGenText3" text="{ProrationModel>AufnrTxt}"/>
-                        <Text id="_IDGenText4" text="{ProrationModel>Equipment}"/>                        
-                        <Text id="_IDGenText5" text="{ProrationModel>Erdat}"/>                                                       
+                    <ColumnListItem id="_IDGenColumnListItemOrden" >                        
+                        <Text id="_IDGenTextOrden1" text="{ProrationModel>Aufnr}"/>                        
+                        <Text id="_IDGenTextOrden2" text="{ProrationModel>AufnrTxt}"/>
+                        <Text id="_IDGenTextOrden3" text="{ProrationModel>Equipment}"/>                        
+                        <Text id="_IDGenTextOrden4" text="{ProrationModel>Erdat}"/>                                                       
                         
                     </ColumnListItem>
                 </items>
