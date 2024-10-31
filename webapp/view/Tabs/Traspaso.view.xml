@@ -8,7 +8,7 @@
   xmlns:m="sap.m" 
   xmlns:l="sap.ui.layout" >  
   <f:SimpleForm		
-		id="PiezaForm"
+		id="TraspasoForm"
 		columnsL="3"
 		columnsM="3"
 		editable="true"
@@ -30,12 +30,12 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <Title
-                            id="tableHeader"
+                            id="tableHeaderTraspaso"
                             text="{worklistView>/worklistTableTitle}"
                             level="H3"/>
                         <ToolbarSpacer />
                         <SearchField
-                            id="searchField"
+                            id="searchFieldTranspaso"
                             tooltip="{i18n>worklistSearchTooltip}"
                             search=".onSearch">
                             <layoutData>
@@ -48,8 +48,8 @@
                 </headerToolbar>
 
                 <columns>                   
-                    <Column id="ExpedienteName">
-                        <Text text="{i18n>tableExpedienteNameTitle}" id="ExpedienteNameTitle"/>
+                    <Column id="ExpedienteNameTrapaso">
+                        <Text text="{i18n>tableExpedienteNameTitle}" id="ExpedienteNameTitleTraspaso"/>
                     </Column>
                      <Column id="Centro">
                         <Text text="{i18n>tableCentroTitle}" id="CentroTitle"/>
@@ -57,33 +57,33 @@
                     <Column id="CentroTel">
                         <Text text="{i18n>tableCentroTelTitle}" id="CentroTelTitle"/>
                     </Column> 
-                    <Column id="Pieza">
-                        <Text text="{i18n>tablePiezaTitle}" id="PiezaTitle"/>
+                    <Column id="PiezaTraspaso">
+                        <Text text="{i18n>tablePiezaTitle}" id="PiezaTitleTraspaso"/>
                     </Column> 
-                    <Column id="PiezaDesc">
-                        <Text text="{i18n>tablePiezaDescTitle}" id="PiezaDescTitle"/>
+                    <Column id="PiezaDescTraspaso">
+                        <Text text="{i18n>tablePiezaDescTitle}" id="PiezaDescTitleTraspaso"/>
                     </Column>        
-                     <Column id="Modelo">
-                        <Text text="{i18n>tableModeloTitle}" id="ModeloTitle"/>
+                     <Column id="ModeloTraspaso">
+                        <Text text="{i18n>tableModeloTitle}" id="ModeloTitleTraspaso"/>
                     </Column>                    
-                    <Column id="Cant" hAlign="Center">
-                        <Text text="{i18n>tableCantTitle}" id="CantTitle"/>
+                    <Column id="CantTraspaso" hAlign="Center">
+                        <Text text="{i18n>tableCantTitle}" id="CantTitleTraspaso"/>
                     </Column>                                    
                 </columns>
 
                 <items>
-                    <ColumnListItem id="_IDGenColumnListItem1"  >
+                    <ColumnListItem id="_IDGenColumnListItemTraspaso"  >
                     <customData>
                     <core:CustomData key="mytraspaso" value="{ProrationModel>Centro}" writeToDom="true" >
                     </core:CustomData>
                     </customData>
                                                
-                        <Text id="_IDGenText2" text="{ProrationModel>ExpedienteName}"/>
-                        <Text id="_IDGenText3" text="{ProrationModel>Centro}"/>
-                        <Text id="_IDGenText4" text="{ProrationModel>Ctel}"/>
-                        <Text id="_IDGenText5" text="{ProrationModel>Pieza}"/>
-                        <Text id="_IDGenText6" text="{ProrationModel>PiezaDesc}"/>
-                        <Text id="_IDGenText7" text="{ProrationModel>Modelo}"/>  
+                        <Text id="_IDGenTextTraspaso1" text="{ProrationModel>ExpedienteName}"/>
+                        <Text id="_IDGenTextTraspaso2" text="{ProrationModel>Centro}"/>
+                        <Text id="_IDGenTextTraspaso3" text="{ProrationModel>Ctel}"/>
+                        <Text id="_IDGenTextTraspaso4" text="{ProrationModel>Pieza}"/>
+                        <Text id="_IDGenTextTraspaso5" text="{ProrationModel>PiezaDesc}"/>
+                        <Text id="_IDGenTextTraspaso6" text="{ProrationModel>Modelo}"/>  
                         <ObjectNumber number="{
 								path: 'ProrationModel>Cant'                                
 							}" />                                                                      

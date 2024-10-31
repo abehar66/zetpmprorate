@@ -33,12 +33,12 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <Title
-                            id="tableHeader"
+                            id="tableHeaderComprobante"
                             text="{worklistView>/worklistTableTitle2}"
                             level="H3"/>
                         <ToolbarSpacer />
                         <SearchField
-                            id="searchField"
+                            id="searchFieldComprobante"
                             tooltip="{i18n>worklistSearchTooltip}"
                             search=".onSearch">
                             <layoutData>
@@ -51,8 +51,8 @@
                 </headerToolbar>
 
                 <columns>                    
-                    <Column id="ExpedienteName">
-                        <Text text="{i18n>tableExpedienteNameTitle}" id="ExpedienteNameTitle"/>
+                    <Column id="ExpedienteNameComprobante">
+                        <Text text="{i18n>tableExpedienteNameTitle}" id="ExpedienteNameTitleComprobante"/>
                     </Column>                    
                     <Column id="Orden">
                         <Text text="{i18n>tableOrdenTitle}" id="OrdenTitle"/>
@@ -69,15 +69,15 @@
                 </columns>
 
                 <items>
-                    <ColumnListItem id="_IDGenColumnListItem1" >  
+                    <ColumnListItem id="_IDGenColumnListItemComprobante" >  
                       <customData>
                       <core:CustomData key="mygasto" value="{ProrationModel>Cuenta}" writeToDom="true" >
                       </core:CustomData>
                      </customData>
-                        <Text id="_IDGenText2" text="{ProrationModel>ExpedienteName}"/>
-                        <Text id="_IDGenText3" text="{ProrationModel>Orden}"/>
-                        <Text id="_IDGenText4" text="{ProrationModel>Mblnr}"/>                                                
-                        <Text id="_IDGenText5" text="{ProrationModel>Cuenta}"/>
+                        <Text id="_IDGenTextComprobante1" text="{ProrationModel>ExpedienteName}"/>
+                        <Text id="_IDGenTextComprobante2" text="{ProrationModel>Orden}"/>
+                        <Text id="_IDGenTextComprobante3" text="{ProrationModel>Mblnr}"/>                                                
+                        <Text id="_IDGenTextComprobante4" text="{ProrationModel>Cuenta}"/>
                         <ObjectNumber number="{
 								path: 'ProrationModel>Gasto'                                
 							}" />
