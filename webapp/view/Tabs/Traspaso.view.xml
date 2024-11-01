@@ -79,8 +79,8 @@
                     </customData>
                                                
                         <Text id="_IDGenTextTraspaso1" text="{ProrationModel>ExpedienteName}"/>
-                        <Text id="_IDGenTextTraspaso2" text="{ProrationModel>Centro}"/>
-                        <Text id="_IDGenTextTraspaso3" text="{ProrationModel>Ctel}"/>
+                        <Text id="_IDGenTextTraspaso2" text="{=${ProrationModel>CentroTxt} === '' ? ${ProrationModel>Centro} : ${ProrationModel>CentroTxt} }"/>
+                        <Text id="_IDGenTextTraspaso3" text="{=${ProrationModel>CtelTxt} === '' ? ${ProrationModel>Ctel} : ${ProrationModel>CtelTxt} }"/>
                         <Text id="_IDGenTextTraspaso4" text="{ProrationModel>Pieza}"/>
                         <Text id="_IDGenTextTraspaso5" text="{ProrationModel>PiezaDesc}"/>
                         <Text id="_IDGenTextTraspaso6" text="{ProrationModel>Modelo}"/>  
