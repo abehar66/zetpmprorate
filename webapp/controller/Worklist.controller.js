@@ -500,7 +500,9 @@ sap.ui.define([
             });
 
             curr = Object.assign({}, curr);
-            curr.Centro = 'Total';
+            curr.CentroTxt = 'Total';
+            curr.Centro = 'Total';            
+            curr.CtelTxt = '';
             curr.Pieza = '';
             curr.PiezaDesc = '';
             curr.Modelo = '';

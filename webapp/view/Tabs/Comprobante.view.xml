@@ -63,7 +63,7 @@
                     <Column id="Cuenta">
                         <Text text="{i18n>tableCuentaTitle}" id="CuentaTitle"/>
                     </Column>
-                    <Column id="Gasto" hAlign="Center">
+                    <Column id="Gasto" hAlign="End">
                         <Text text="{i18n>tableGastoTitle}" id="GastoTitle"/>
                     </Column>                                        
                 </columns>
@@ -78,8 +78,9 @@
                         <Text id="_IDGenTextComprobante2" text="{ProrationModel>Orden}"/>
                         <Text id="_IDGenTextComprobante3" text="{ProrationModel>Mblnr}"/>                                                
                         <Text id="_IDGenTextComprobante4" text="{ProrationModel>Cuenta}"/>
-                        <ObjectNumber number="{
-								path: 'ProrationModel>Gasto'                                
+                        <ObjectNumber                            
+                           number="{
+								path: 'ProrationModel>Gasto'                                                                                               
 							}" />
                                                 
                     </ColumnListItem>

@@ -63,7 +63,7 @@
                     <Column id="Cant" hAlign="Center">
                         <Text text="{i18n>tableCantTitle}" id="CantTitle"/>
                     </Column>
-                    <Column id="Precio" hAlign="Center">
+                    <Column id="Precio" hAlign="End">
                         <Text text="{i18n>tablePrecioTitle}" id="PrecioTitle"/>
                     </Column>                    
                 </columns>
